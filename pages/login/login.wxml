@@ -1,0 +1,22 @@
+<view class="page login-wrap">
+  <image class="brand" src="/assets/logos/logo.png" mode="aspectFit" />
+  <text class="title">是模玩店！</text>
+  <text class="slogan">积分会员 · 攒分兑好物</text>
+
+  <view class="card">
+    <text class="card-title">手机号快捷登录</text>
+    <text class="card-sub">使用微信绑定的手机号一键登录，无需输入验证码</text>
+
+    <button class="phone-btn {{ submitting?'disabled':'' }}" open-type="getPhoneNumber" bindgetphonenumber="onGetPhone">
+      微信手机号一键登录
+    </button>
+
+    <view class="agree">
+      登录即表示同意
+      <text class="link" bindtap="goRules">《积分会员服务规则》</text>
+      ，我们仅用手机号做会员识别与到店服务通知。
+    </view>
+  </view>
+
+  <text class="staff-entry" bindtap="goStaffLogin">我是店员 / 店长 →</text>
+</view>

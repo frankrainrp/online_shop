@@ -36,11 +36,13 @@
 
 ---
 
-## 三、部署全部云函数（14 个）
+## 三、部署全部云函数（15 个）
 ```
 init  login  signIn  addPoints  redeemGoods  verifyRedeem  updateProfile  getMember
-admin  claimAdmin  resignStaff  staffSecret  getAudit  getDashboard
+admin  claimAdmin  resignStaff  staffSecret  getAudit  getDashboard  bindPhone
 ```
+> ⚠️ `bindPhone` 用微信手机号能力，需小程序**已认证**并开通；存储手机号到 users（PII）。
+> **隐私保护指引必须勾选「手机号」**，否则审核被拒、且违规收集 PII。users 集合已 `read:false` 锁死。
 
 ## 四、部署强依赖（不做=漏洞）
 1. **`claimAdmin` 环境变量 `TOTP_SECRET`** 必须设为真实 base32 密钥。

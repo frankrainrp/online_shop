@@ -7,8 +7,15 @@ Page({
     loading: true
   },
 
-  onShow() {
+  async onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ selected: 0 });
+    // 新客手机号登录拦截：已登录但未绑手机号 → 跳登录页（店员/管理员豁免，便于内部使用）
+    const g = await app.getUser();
+    const isStaffMember = g.isStaff || (g.staffState && g.staffState.exists);
+    if (g.userInfo && !g.userInfo.phone && !isStaffMember) {
+      wx.reLaunch({ url: '/pages/login/login' });
+      return;
+    }
     this.load();
   },
 

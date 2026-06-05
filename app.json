@@ -16,7 +16,8 @@
     "pages/rules/rules",
     "pages/audit/audit",
     "pages/dashboard/dashboard",
-    "pages/invite/invite"
+    "pages/invite/invite",
+    "pages/login/login"
   ],
   "window": {
     "navigationBarBackgroundColor": "#161616",
