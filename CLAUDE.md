@@ -76,5 +76,19 @@ wechat_programe/
 4. **改业务规则**先改 `utils/config.js`（前端）+ 对应云函数里的同名常量（已注释标出）。
 5. **进度更新**写进 `PROGRESS.md` 并追加更新日志。
 
-## 当前状态
-M1-M3 完成（脚手架/框架/安全代码）；M4 视觉改版进行中。详见 PROGRESS.md。
+## 当前状态（交接快照）
+- **页面（14）**：index 首页 / redeem 兑换 / member-code 会员码 / member 我的（4 个 tab）+ points 我的积分 / points-log 积分明细 / my-redeems 我的兑换 / goods-update 动态 / goods-detail 商品详情 / search 搜索 / staff 店员工作台 / admin 店铺管理 / staff-login 员工入口 / rules 积分规则。
+- **云函数（11）**：init / login / signIn / addPoints / redeemGoods / verifyRedeem / updateProfile / getMember / admin / claimAdmin / resignStaff。
+- **组件**：components/icon（图标，用 PNG）；custom-tab-bar（自定义底栏，用 SVG→PNG 图标）。
+- **集合（9）**：users / points_log / goods / redeems / staff / updates / banners / sec_lock / sec_otp。
+- 进度：M1-M4 完成，M5 主体完成（余 我的优惠券页/会员码真二维码/连续签到/消费积分抵现），M6 上线准备进行中。**权威进度看 PROGRESS.md。**
+
+## 交接要点（接手必读）
+1. **密钥不在代码里**：claimAdmin 的 TOTP_SECRET 走 `process.env.TOTP_SECRET`；真实值在本地 `tools/.totp_secret`（gitignore）。重新部署 claimAdmin 前，必须在云函数环境变量设 TOTP_SECRET，否则 OTP 失效。本地出码：`node tools/otp.js`。
+2. **安全是底线**：所有写操作走云函数 + 服务端校验；竞态用原子条件更新 `where(条件).update()`（见 SECURITY_TEST.md 三轮审计）。改业务逻辑务必保持。
+3. **真机布局坑**：别让多列宽度凑满 100%、别用 `inset`/`constant()`、env() 别进 padding 简写（见 SIZE_DEBUG.md）。改样式必须真机验证。
+4. **图标**：源 SVG 在 assets/wechat_icons_svg + source；运行用 PNG（assets/icons、assets/tab），由 `node tools/svg2png/convert.js`（resvg 渲染+裁紧）生成。SVG 在微信 image 渲染不全，故走 PNG。
+5. **商品多图**：goods.images 数组，封面 = images[0]（云函数自动同步到 image 字段给列表卡片用）。
+6. **待填真实信息**：pages/rules/rules.js 店名/客服；小程序后台名称与隐私指引；详见 PROGRESS.md M6。
+7. **文档体系**：PROGRESS（进度）/ SECURITY+SECURITY_TEST（安全）/ SIZE_DEBUG（布局）/ IMAGE_ASSETS（素材）/ SKILL（AI 身份）/ 使用文档+价值文档+项目说明_给雇主（对外）。
+8. **备份**：GitHub frankrainrp/online_shop（main）。改完按需 commit&push；node_modules/assets/source/.totp_secret 已 gitignore。
