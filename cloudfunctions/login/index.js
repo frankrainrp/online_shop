@@ -5,7 +5,7 @@ const db = cloud.database();
 
 const NEW_MEMBER_BONUS = 120; // 新客入会赠送积分（同步 utils/config.js）
 
-exports.main = async () => {
+exports.main = async (event) => {
   const { OPENID } = cloud.getWXContext();
   const usersCol = db.collection('users');
   const staffCol = db.collection('staff');
@@ -29,6 +29,18 @@ exports.main = async () => {
       lastSignAt: 0,              // 便于签到原子判断
       createdAt: now
     };
+
+    // 邀请有礼：仅「首次注册」绑定邀请人；奖励等新人到店消费时才发（见 addPoints）
+    const inviter = (event && typeof event.inviter === 'string') ? event.inviter.trim() : '';
+    if (inviter) {
+      const inv = await usersCol.doc(inviter).get().catch(() => null);
+      // 邀请人必须存在，且不是自己（openid 不同）
+      if (inv && inv.data && inv.data.openid !== OPENID) {
+        doc.invitedBy = inviter;
+        doc.inviteRewarded = false;
+      }
+    }
+
     const add = await usersCol.add({ data: doc });
     user = { _id: add._id, ...doc };
 

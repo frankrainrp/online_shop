@@ -50,6 +50,7 @@
     <!-- 常用功能 -->
     <view class="section-title">常用功能</view>
     <view class="list">
+      <view class="list-row" bindtap="goInvite"><text class="title" style="font-size:28rpx; color:var(--primary); font-weight:600">邀请有礼 · 拉新双方得积分</text><text class="mute">›</text></view>
       <view class="list-row" bindtap="goLog"><text class="title" style="font-size:28rpx">积分明细</text><text class="mute">›</text></view>
       <view class="list-row" bindtap="goRedeem"><text class="title" style="font-size:28rpx">积分兑换</text><text class="mute">›</text></view>
       <view class="list-row" bindtap="goRedeems"><text class="title" style="font-size:28rpx">我的兑换</text><text class="mute">›</text></view>

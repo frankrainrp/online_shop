@@ -7,10 +7,12 @@ App({
     isAdmin: false,   // 是否管理员（店员 + role==='admin' + 会话有效）
     staffInfo: null,  // 店员记录（已隐去密钥）
     staffState: null, // { exists, role, hasSecret, sessionValid, sessionExpireAt } 供员工入口页
+    pendingInviter: null, // 邀请有礼：分享进入时暂存的邀请人 userId
     envId: 'cloud1-d3gbpj97870c1a7cd' // TODO: 替换成你云开发控制台里的环境 ID
   },
 
-  onLaunch() {
+  onLaunch(options) {
+    this.captureInviter(options);
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
       this.loginReady = true;   // 放行页面，避免永久等待
@@ -23,12 +25,22 @@ App({
     this.login();
   },
 
+  // 从启动/分享参数里取邀请人（邀请有礼）。冷启动 onLaunch、热启动转发 onShow 都会带 query
+  onShow(options) { this.captureInviter(options); },
+  captureInviter(options) {
+    const q = (options && options.query) || {};
+    if (q.inviter && !this.globalData.pendingInviter) {
+      this.globalData.pendingInviter = q.inviter;
+    }
+  },
+
   loginReady: false,   // login 是否已跑完（无论成败）
   _waiters: [],        // 等待登录结果的页面回调队列
 
   // 登录：调用 login 云函数拿 openid，并 upsert 会员记录
   login() {
-    return wx.cloud.callFunction({ name: 'login' })
+    const data = this.globalData.pendingInviter ? { inviter: this.globalData.pendingInviter } : {};
+    return wx.cloud.callFunction({ name: 'login', data })
       .then(res => {
         const r = (res && res.result) || {};
         this.globalData.openid = r.openid || null;

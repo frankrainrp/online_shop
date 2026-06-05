@@ -17,7 +17,8 @@ module.exports = {
     SIGN_REWARD: 10,        // 每日签到 —— 同步：cloudfunctions/signIn
     NEW_MEMBER_BONUS: 120,  // 新客入会（如启用，在 login 云函数发）
     YUAN_TO_POINT: 1,       // 消费 1 元 = 几分（店员「按消费额加分」换算）
-    POINT_TO_YUAN: 100      // 抵现：几分 = 1 元（店员「积分抵现」换算，100 分抵 1 元）
+    POINT_TO_YUAN: 100,     // 抵现：几分 = 1 元（店员「积分抵现」换算，100 分抵 1 元）
+    INVITE_REWARD: 1500     // 邀请有礼：新人首次消费后，邀请人/新人各得（同步 cloudfunctions/addPoints）
   },
 
   // 兑换商品分类

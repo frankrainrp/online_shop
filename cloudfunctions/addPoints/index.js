@@ -8,6 +8,7 @@ const _ = db.command;
 
 const ALLOW_TYPES = ['消费', '签到', '活动', '兑换', '店员调整', '抵现'];
 const MAX_DELTA = 100000; // 单次加/扣分上限，防误操作/被刷
+const INVITE_REWARD = 1500; // 邀请有礼：新人首次消费后，邀请人/新人各得（同步 utils/config.js）
 
 exports.main = async (event) => {
   const { OPENID } = cloud.getWXContext();
@@ -89,5 +90,44 @@ exports.main = async (event) => {
     });
   } catch (e) { /* 审计失败不阻断 */ }
 
-  return { ok: true, balance: newBalance, orderNo };
+  // 6. 邀请有礼结算：新人「首次消费」触发，双方各 +INVITE_REWARD（只发一次）
+  let inviteReward = 0;
+  if (type === '消费' && cur.invitedBy && cur.inviteRewarded === false) {
+    // 原子占用：仅当 inviteRewarded 仍为 false 才置 true，防并发重复发奖
+    const claim = await usersCol.where({ _id: targetUserId, inviteRewarded: false })
+      .update({ data: { inviteRewarded: true } });
+    if (claim.stats.updated === 1) {
+      const now = Date.now();
+      // 新人侧 +奖励
+      await usersCol.doc(targetUserId).update({ data: { points: _.inc(INVITE_REWARD), growth: _.inc(INVITE_REWARD) } });
+      const newcomerBal = (await usersCol.doc(targetUserId).get().catch(() => null));
+      await db.collection('points_log').add({
+        data: {
+          userId: targetUserId, openid: cur.openid, type: '活动', delta: INVITE_REWARD,
+          balance: newcomerBal && newcomerBal.data ? newcomerBal.data.points : null,
+          orderNo: 'IV' + now + '1', remark: '邀请有礼·受邀奖励', operator: '系统', createdAt: now
+        }
+      });
+      // 邀请人侧 +奖励 + 拉新数 +1（邀请人可能已不存在，catch 兜底）
+      const inviter = await usersCol.doc(cur.invitedBy).get().catch(() => null);
+      if (inviter && inviter.data) {
+        await usersCol.doc(cur.invitedBy).update({ data: { points: _.inc(INVITE_REWARD), growth: _.inc(INVITE_REWARD), inviteCount: _.inc(1) } });
+        await db.collection('points_log').add({
+          data: {
+            userId: cur.invitedBy, openid: inviter.data.openid, type: '活动', delta: INVITE_REWARD,
+            balance: (inviter.data.points || 0) + INVITE_REWARD,
+            orderNo: 'IV' + now + '2', remark: `邀请有礼·成功邀请「${cur.nickName || '新会员'}」`, operator: '系统', createdAt: now
+          }
+        });
+      }
+      try {
+        await db.collection('audit_log').add({
+          data: { ts: now, openid: OPENID, operatorName: operator.name || operator.jobNo || '', action: '邀请奖励', targetType: 'user', targetId: targetUserId, summary: `${cur.nickName || '新会员'} 首消触发邀请有礼，双方各 +${INVITE_REWARD}` }
+        });
+      } catch (e) { /* ignore */ }
+      inviteReward = INVITE_REWARD;
+    }
+  }
+
+  return { ok: true, balance: newBalance, orderNo, inviteReward };
 };

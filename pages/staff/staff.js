@@ -129,7 +129,12 @@ Page({
         };
         (clearKeys || []).forEach(k => { patch[k] = k.endsWith('Points') ? 0 : ''; });
         this.setData(patch);
-        wx.showToast({ title: '操作成功', icon: 'success' });
+        // 邀请有礼触发：提醒店员双方已各得奖励
+        if (res.result.inviteReward) {
+          wx.showModal({ title: '🎉 邀请有礼', content: `该会员是受邀新客且首次消费，邀请人与他各得 ${res.result.inviteReward} 积分`, showCancel: false });
+        } else {
+          wx.showToast({ title: '操作成功', icon: 'success' });
+        }
       } else {
         wx.showToast({ title: res.result.msg, icon: 'none' });
       }

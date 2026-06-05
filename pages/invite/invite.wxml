@@ -1,0 +1,25 @@
+<view class="page wrap">
+  <!-- 头部奖励 -->
+  <view class="invite-hero">
+    <text class="hero-title">邀请有礼</text>
+    <text class="hero-reward">好友到店消费<text class="hl"> 双方各得 {{ reward }} 积分</text></text>
+    <text class="hero-sub">≈ 各 {{ rewardYuan }} 元，积分可抵现/兑好物</text>
+  </view>
+
+  <!-- 玩法 -->
+  <view class="steps">
+    <view class="step"><text class="step-no">1</text><text class="step-txt">分享给好友，邀请 TA 成为会员</text></view>
+    <view class="step"><text class="step-no">2</text><text class="step-txt">好友首次到店消费</text></view>
+    <view class="step"><text class="step-no">3</text><text class="step-txt">你和好友各得 {{ reward }} 积分，自动到账</text></view>
+  </view>
+
+  <!-- 我的战绩 -->
+  <view class="stat-card">
+    <text class="stat-num">{{ inviteCount }}</text>
+    <text class="stat-label">已成功邀请（好友消费后计入）</text>
+  </view>
+
+  <!-- 分享按钮 -->
+  <button class="share-btn" open-type="share">分享给好友，赚积分</button>
+  <text class="rule-tip">规则：仅好友首次注册并首次到店消费时发放，每位好友只奖励一次；最终解释权归本店。</text>
+</view>
