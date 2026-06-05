@@ -22,8 +22,12 @@ Page({
       const db = wx.cloud.database();
       const res = await db.collection('goods').doc(this.data.id).get();
       const goods = res.data;
+      const imgs = (Array.isArray(goods.images) && goods.images.length)
+        ? goods.images
+        : (goods.image ? [goods.image] : []);
       this.setData({
         goods,
+        imgs,
         user: userInfo,
         loading: false,
         canRedeem: !!(userInfo && goods.status === 'on' && goods.stock > 0 && userInfo.points >= goods.cost)
@@ -42,7 +46,7 @@ Page({
 
     const ok = await new Promise(r => wx.showModal({
       title: '确认兑换',
-      content: `用 ${g.cost} 积分兑换「${g.name}」？`,
+      content: `用 ${g.cost} 积分兑换「${g.name}」？\n积分立即扣除，券需到店核销，成功后不退不换。`,
       success: m => r(m.confirm)
     }));
     if (!ok) return;

@@ -45,6 +45,6 @@
     <text class="section-title" style="margin:0 0 16rpx">积分小贴士</text>
     <text class="sub" style="display:block;margin:8rpx 0">· 积分在订单完成后自动到账</text>
     <text class="sub" style="display:block;margin:8rpx 0">· 积分有效期为 12 个月，过期前会提醒</text>
-    <text class="sub" style="display:block;margin:8rpx 0">· 更多规则请查看《积分规则》</text>
+    <text class="sub" style="display:block;margin:8rpx 0" bindtap="goRules">· 更多规则请查看《积分规则》›</text>
   </view>
 </view>

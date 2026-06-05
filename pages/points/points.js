@@ -26,5 +26,6 @@ Page({
 
   goLog() { wx.navigateTo({ url: '/pages/points-log/points-log' }); },
   goRedeem() { wx.switchTab({ url: '/pages/redeem/redeem' }); },
-  goCode() { wx.switchTab({ url: '/pages/member-code/member-code' }); }
+  goCode() { wx.switchTab({ url: '/pages/member-code/member-code' }); },
+  goRules() { wx.navigateTo({ url: '/pages/rules/rules' }); }
 });

@@ -43,7 +43,9 @@
 - [x] 控制台配齐集合安全规则（见 SECURITY.md / SECURITY_TEST.md）
 - [ ] 补齐 UI 素材（见 IMAGE_ASSETS.md）：tabBar 图标、导航图标、Banner
 - [ ] 商品实拍图 / 占位图替换
-- [ ] 小程序「用户隐私保护指引」配置（获取头像/昵称必需）
+- [ ] **填真实信息**：`pages/rules/rules.js` 的 `shopName`（营业执照店名）、`contact`（真实客服/电话）
+- [ ] **填真实信息**：小程序后台名称改「是模玩店！」；claimAdmin 重新部署前先在云函数环境变量设 `TOTP_SECRET`
+- [ ] 小程序「用户隐私保护指引」配置（获取头像/昵称必需，规则页已引用）
 - [ ] 真机体验版 → 提交审核
 
 ## M5 残留安全建议（非阻断，见 SECURITY_TEST.md）
@@ -104,3 +106,5 @@
 - 2026-06-04 GitHub 备份（frankrainrp/online_shop）：清理 OIP.webp，.gitignore 排除 node_modules/assets/source；**安全：TOTP 密钥从代码移到环境变量+本地 .totp_secret，仓库不含真实密钥**
 - 2026-06-04 全局名改「是模玩店！」（UI+8 份文档）
 - 2026-06-04 **尺寸/布局真机审计（见 SIZE_DEBUG.md）**：修复 真机两列网格掉单列（calc(50%-10)凑满100%→改-14留余量，index/redeem/search）、admin .mask inset:0→写全四边、goods-detail 底栏 env() 进 padding 简写→拆开；确认横滑项 flex-shrink、box-sizing、rpx、tab 页底部留白均安全
+- 2026-06-04 **商品多图**：goods 加 images 数组（最多9张），admin 表单 images 类型（多选上传/删除/封面标记），云函数 sanitize 校验数组+自动设 image=images[0] 兼容列表卡片；商品详情页大图改 swiper 轮播
+- 2026-06-04 **法律声明（维护商家利益）**：新增 pages/rules「积分会员服务规则」（积分获取/使用/兑换核销/有效期/行为规范/隐私/免责/最终解释权归本店/适用中国法律），「我的」+「我的积分」入口链入；兑换确认弹窗加"积分立即扣除·到店核销·不退不换"免责。店名/客服为 TODO 占位需填真实信息

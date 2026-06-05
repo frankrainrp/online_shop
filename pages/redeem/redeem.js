@@ -40,7 +40,7 @@ Page({
 
     const ok = await new Promise(r => wx.showModal({
       title: '确认兑换',
-      content: `用 ${item.cost} 积分兑换「${item.name}」？`,
+      content: `用 ${item.cost} 积分兑换「${item.name}」？\n积分立即扣除，券需到店核销，成功后不退不换。`,
       success: res => r(res.confirm)
     }));
     if (!ok) return;

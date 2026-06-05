@@ -1,0 +1,58 @@
+<view class="page wrap">
+  <view class="doc">
+    <text class="doc-title">积分会员服务规则</text>
+    <text class="doc-meta">本规则由「{{ shopName }}」（以下简称"本店"）制定。会员注册或使用本小程序积分服务，即视为已阅读并同意本规则。</text>
+
+    <view class="sec">
+      <text class="sec-h">一、积分获取</text>
+      <text class="sec-p">1. 会员可通过入会、每日签到、到店消费及本店不定期推出的活动获取积分，具体获取方式与数值以小程序内当时展示为准。</text>
+      <text class="sec-p">2. 本店有权根据经营需要调整积分获取规则，调整后以小程序内公示为准。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">二、积分使用</text>
+      <text class="sec-p">1. 积分仅可用于兑换本店指定的商品、优惠券或权益。</text>
+      <text class="sec-p">2. 积分不可兑换现金、不可转让、不可找零，不与其他优惠叠加（另有说明的除外）。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">三、兑换与核销</text>
+      <text class="sec-p">1. 兑换成功后积分立即扣除并生成兑换码，请在有效期内到店向店员出示兑换码核销。</text>
+      <text class="sec-p">2. 兑换商品库存有限，先到先得，兑完即止。</text>
+      <text class="sec-p">3. 兑换一经完成，非商品质量问题，不退积分、不退换。兑换码遗失、逾期、被冒用等由会员自行承担。</text>
+      <text class="sec-p">4. 商品图片及描述仅供参考，规格、颜色等以实物为准。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">四、积分有效期</text>
+      <text class="sec-p">如本店设置积分有效期，将在小程序内明示；超过有效期的积分将自动作废，不再补发。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">五、行为规范</text>
+      <text class="sec-p">严禁通过作弊、刷分、滥用系统漏洞、虚假交易等不正当方式获取或使用积分。一经发现，本店有权清零相关积分、收回已兑换权益、取消会员资格，并保留依法追究责任的权利。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">六、隐私保护</text>
+      <text class="sec-p">本店仅收集为提供会员积分服务所必需的信息（如微信昵称、头像）。我们不会向第三方出售您的个人信息，法律法规另有规定或经您同意的除外。详见《用户隐私保护指引》。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">七、免责声明</text>
+      <text class="sec-p">因系统故障、网络中断、微信平台调整、不可抗力等本店不能合理控制的原因，导致服务暂停、数据延迟或异常的，本店将尽力修复，但不承担超出法律法规规定范围的责任。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">八、规则变更与解释</text>
+      <text class="sec-p">本店保留随时修改、暂停或终止积分活动及本规则的权利，并以小程序内公告为准。在法律允许的范围内，本规则及相关积分活动的最终解释权归本店所有。</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-h">九、适用法律</text>
+      <text class="sec-p">本规则的订立、执行与解释均适用中华人民共和国相关法律法规。</text>
+    </view>
+
+    <text class="doc-foot">如有疑问，请联系：{{ contact }}。</text>
+  </view>
+</view>

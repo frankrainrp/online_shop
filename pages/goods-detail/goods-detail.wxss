@@ -1,6 +1,7 @@
 .page { padding-bottom: 160rpx; }
 
 .hero-img { width: 100%; height: 600rpx; background: var(--bg-card-2); display: block; }
+.hero-pic { width: 100%; height: 600rpx; }
 .hero-ph { display: flex; align-items: center; justify-content: center; color: var(--text-mute); font-size: 28rpx; }
 
 .info-card {

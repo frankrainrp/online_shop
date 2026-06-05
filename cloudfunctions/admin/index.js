@@ -7,8 +7,8 @@ const db = cloud.database();
 // 允许管理的集合 + 各自字段白名单（杜绝注入任意字段）
 const SCHEMA = {
   goods: {
-    fields: { name: 'string', category: 'string', cost: 'number', stock: 'number', image: 'string', status: 'string', desc: 'string' },
-    defaults: { status: 'on', stock: 0, cost: 0, image: '', desc: '' }
+    fields: { name: 'string', category: 'string', cost: 'number', stock: 'number', image: 'string', images: 'images', status: 'string', desc: 'string' },
+    defaults: { status: 'on', stock: 0, cost: 0, image: '', images: [], desc: '' }
   },
   banners: {
     fields: { title: 'string', image: 'string', link: 'string', sort: 'number' },
@@ -31,9 +31,17 @@ function sanitize(collection, raw) {
       if (isNaN(n) || n < 0) n = 0;          // 非负整数，杜绝负库存/负积分价/小数
       if (n > 1e9) n = 1e9;                  // 上限钳制，杜绝超大值
       out[k] = n;
+    } else if (fields[k] === 'images') {
+      // 图片数组：每项必须是 cloud:// 或 https:// 字符串，最多 9 张
+      const arr = Array.isArray(raw[k]) ? raw[k] : [];
+      out[k] = arr.filter(s => typeof s === 'string' && /^(cloud:\/\/|https:\/\/)/.test(s)).slice(0, 9);
     } else {
       out[k] = String(raw[k]).slice(0, 500);
     }
+  }
+  // 商品：封面 image 自动取第一张，保证列表卡片有图
+  if (collection === 'goods' && Array.isArray(out.images)) {
+    out.image = out.images[0] || '';
   }
   return out;
 }

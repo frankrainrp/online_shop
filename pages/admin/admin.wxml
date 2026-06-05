@@ -67,10 +67,20 @@
             <switch wx:elif="{{ item.type==='switch' }}" checked="{{ form[item.key]==='on' }}"
                     color="#e5332a" data-key="{{ item.key }}" bindchange="onSwitch" />
 
-            <!-- 图片 -->
+            <!-- 单图 -->
             <view wx:elif="{{ item.type==='image' }}" class="field-img" data-key="{{ item.key }}" bindtap="onChooseImage">
               <image wx:if="{{ form[item.key] }}" class="field-img-pic" src="{{ form[item.key] }}" mode="aspectFill" />
               <view wx:else class="field-img-ph">点击上传</view>
+            </view>
+
+            <!-- 多图 -->
+            <view wx:elif="{{ item.type==='images' }}" class="img-gallery">
+              <view wx:for="{{ form[item.key] }}" wx:for-item="pic" wx:for-index="pi" wx:key="*this" class="gal-item">
+                <image class="gal-pic" src="{{ pic }}" mode="aspectFill" />
+                <view wx:if="{{ pi===0 }}" class="gal-cover">封面</view>
+                <view class="gal-del" data-key="{{ item.key }}" data-index="{{ pi }}" catchtap="onRemoveImage">×</view>
+              </view>
+              <view wx:if="{{ (form[item.key].length||0) < 9 }}" class="gal-add" data-key="{{ item.key }}" bindtap="onChooseImages">+</view>
             </view>
           </view>
         </scroll-view>

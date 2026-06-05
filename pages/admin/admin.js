@@ -9,7 +9,7 @@ const FORM = {
     { key: 'stock', label: '库存', type: 'number' },
     { key: 'desc', label: '商品描述', type: 'textarea' },
     { key: 'status', label: '上架', type: 'switch' },
-    { key: 'image', label: '商品图', type: 'image' }
+    { key: 'images', label: '商品图（可多张，第一张为封面）', type: 'images' }
   ],
   banners: [
     { key: 'title', label: '标题', type: 'text' },
@@ -88,6 +88,7 @@ Page({
     const blank = {};
     this.data.formFields.forEach(f => {
       if (f.type === 'switch') blank[f.key] = f.key === 'role' ? 'off' : 'on'; // 店员角色默认普通店员
+      else if (f.type === 'images') blank[f.key] = [];
       else blank[f.key] = f.type === 'number' ? 0 : '';
     });
     this.setData({ form: blank, showForm: true });
@@ -96,7 +97,12 @@ Page({
   // 编辑
   onEdit(e) {
     const item = e.currentTarget.dataset.item;
-    this.setData({ form: { ...item }, showForm: true });
+    const form = { ...item };
+    // 兼容旧数据：没有 images 数组时，用单图 image 兜底
+    if (this.data.formFields.some(f => f.type === 'images')) {
+      form.images = Array.isArray(item.images) ? item.images : (item.image ? [item.image] : []);
+    }
+    this.setData({ form, showForm: true });
   },
 
   closeForm() { this.setData({ showForm: false }); },
@@ -142,6 +148,43 @@ Page({
       console.error('uploadFile 失败', err);
       wx.showModal({ title: '图片上传失败', content: (err && err.errMsg) || JSON.stringify(err), showCancel: false });
     }
+  },
+
+  // 多图上传（商品图）：一次可选多张，逐张传云存储，追加到 form.images
+  async onChooseImages(e) {
+    const key = e.currentTarget.dataset.key;
+    const cur = (this.data.form[key] || []).slice();
+    const remain = 9 - cur.length;
+    if (remain <= 0) { wx.showToast({ title: '最多 9 张', icon: 'none' }); return; }
+    let files;
+    try {
+      const r = await wx.chooseMedia({ count: remain, mediaType: ['image'], sizeType: ['compressed'] });
+      files = (r.tempFiles || []).map(f => f.tempFilePath).filter(Boolean);
+    } catch (_) { return; }
+    if (!files.length) return;
+    wx.showLoading({ title: `上传 0/${files.length}`, mask: true });
+    try {
+      for (let i = 0; i < files.length; i++) {
+        wx.showLoading({ title: `上传 ${i + 1}/${files.length}`, mask: true });
+        const cloudPath = `goods/${Date.now()}-${Math.floor(Math.random() * 10000)}.png`;
+        const up = await wx.cloud.uploadFile({ cloudPath, filePath: files[i] });
+        cur.push(up.fileID);
+      }
+      wx.hideLoading();
+      this.setData({ [`form.${key}`]: cur });
+      wx.showToast({ title: '已上传', icon: 'success' });
+    } catch (err) {
+      wx.hideLoading();
+      this.setData({ [`form.${key}`]: cur }); // 已成功的先保留
+      wx.showModal({ title: '部分图片上传失败', content: (err && err.errMsg) || JSON.stringify(err), showCancel: false });
+    }
+  },
+
+  onRemoveImage(e) {
+    const { key, index } = e.currentTarget.dataset;
+    const arr = (this.data.form[key] || []).slice();
+    arr.splice(index, 1);
+    this.setData({ [`form.${key}`]: arr });
   },
 
   async onSave() {

@@ -81,6 +81,7 @@ Page({
   goStaff()   { wx.navigateTo({ url: '/pages/staff/staff' }); },
   goAdmin()   { wx.navigateTo({ url: '/pages/admin/admin' }); },
   goStaffLogin() { wx.navigateTo({ url: '/pages/staff-login/staff-login' }); },
+  goRules() { wx.navigateTo({ url: '/pages/rules/rules' }); },
 
   // 隐藏入口：2 秒内连点版本号 7 下 → 员工入口
   onSecretTap() {

@@ -75,5 +75,24 @@
   content: '+'; font-size: 48rpx; line-height: 1; color: var(--primary);
 }
 
+/* 多图画廊 */
+.img-gallery { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.gal-item { position: relative; width: 160rpx; height: 160rpx; border-radius: 14rpx; overflow: hidden; }
+.gal-pic { width: 100%; height: 100%; }
+.gal-cover {
+  position: absolute; left: 0; bottom: 0; right: 0;
+  background: rgba(229,51,42,0.85); color: #fff; font-size: 20rpx; text-align: center; padding: 4rpx 0;
+}
+.gal-del {
+  position: absolute; right: 4rpx; top: 4rpx;
+  width: 36rpx; height: 36rpx; line-height: 32rpx; text-align: center;
+  background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; font-size: 28rpx;
+}
+.gal-add {
+  width: 160rpx; height: 160rpx; border-radius: 14rpx;
+  border: 2rpx dashed var(--primary); color: var(--primary);
+  display: flex; align-items: center; justify-content: center; font-size: 56rpx;
+}
+
 .sheet-save { margin-top: 24rpx; font-size: 32rpx; padding: 24rpx 0; flex-shrink: 0; }
 .sheet-save.disabled { opacity: 0.5; }

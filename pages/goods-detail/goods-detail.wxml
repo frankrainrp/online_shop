@@ -1,6 +1,11 @@
 <view class="page" wx:if="{{ goods }}">
-  <!-- 大图 -->
-  <image wx:if="{{ goods.image }}" class="hero-img" src="{{ goods.image }}" mode="aspectFill" />
+  <!-- 大图轮播 -->
+  <swiper wx:if="{{ imgs.length }}" class="hero-img" indicator-dots="{{ imgs.length > 1 }}"
+          indicator-active-color="#e5332a" indicator-color="rgba(255,255,255,0.5)" circular="{{ imgs.length > 1 }}">
+    <swiper-item wx:for="{{ imgs }}" wx:key="*this">
+      <image class="hero-pic" src="{{ item }}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
   <view wx:else class="hero-img hero-ph">暂无图片</view>
 
   <!-- 主信息 -->

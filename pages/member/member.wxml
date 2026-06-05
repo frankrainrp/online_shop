@@ -54,6 +54,7 @@
       <view class="list-row" bindtap="goRedeem"><text class="title" style="font-size:28rpx">积分兑换</text><text class="mute">›</text></view>
       <view class="list-row" bindtap="goRedeems"><text class="title" style="font-size:28rpx">我的兑换</text><text class="mute">›</text></view>
       <view class="list-row" bindtap="goCode"><text class="title" style="font-size:28rpx">会员码</text><text class="mute">›</text></view>
+      <view class="list-row" bindtap="goRules"><text class="title" style="font-size:28rpx">积分规则</text><text class="mute">›</text></view>
       <view wx:if="{{ isStaff }}" class="list-row" bindtap="goStaff">
         <text class="title" style="font-size:28rpx; color:var(--accent)">店员工作台</text><text class="mute">›</text>
       </view>
