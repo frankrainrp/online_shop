@@ -23,10 +23,11 @@ exports.main = async (event) => {
       openid: OPENID,
       nickName: '新会员',
       avatarUrl: '',
-      points: NEW_MEMBER_BONUS,   // 入会即送
-      growth: NEW_MEMBER_BONUS,   // 成长值（只增不减，决定等级）
+      points: 0,                  // 入会礼改到「绑定手机号后」发放（见 bindPhone），静默注册不发分
+      growth: 0,
       level: '普通会员',
       lastSignAt: 0,              // 便于签到原子判断
+      newBonusGiven: false,       // 入会礼是否已发（绑手机号时原子置 true，防重复）
       createdAt: now
     };
 
@@ -43,20 +44,6 @@ exports.main = async (event) => {
 
     const add = await usersCol.add({ data: doc });
     user = { _id: add._id, ...doc };
-
-    // 写入会赠送流水
-    await db.collection('points_log').add({
-      data: {
-        userId: add._id,
-        openid: OPENID,
-        type: '入会',
-        delta: NEW_MEMBER_BONUS,
-        balance: NEW_MEMBER_BONUS,
-        orderNo: 'W' + now,
-        remark: '新客入会礼',
-        createdAt: now
-      }
-    });
   }
 
   // 是否店员（按 7 天会话判定：在白名单 + 会话未过期才算「已登录店员」）

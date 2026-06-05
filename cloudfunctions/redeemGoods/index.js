@@ -25,6 +25,7 @@ exports.main = async (event) => {
   const userRes = await usersCol.where({ openid: OPENID }).get();
   if (!userRes.data.length) return { ok: false, msg: '会员不存在' };
   const user = userRes.data[0];
+  if (!user.phone) return { ok: false, msg: '请先用微信手机号登录后再兑换', needLogin: true };
 
   // 2. 读商品 + 业务校验（积分价以服务端为准，不信任何前端传值）
   const goodsRes = await goodsCol.doc(goodsId).get().catch(() => null);

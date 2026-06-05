@@ -20,6 +20,7 @@ exports.main = async () => {
   const res = await usersCol.where({ openid: OPENID }).get();
   if (!res.data.length) return { ok: false, msg: '会员不存在，请重新进入小程序' };
   const user = res.data[0];
+  if (!user.phone) return { ok: false, msg: '请先用微信手机号登录后再签到', needLogin: true };
 
   const dayStart = todayStartCN();
   const now = Date.now();
