@@ -18,7 +18,9 @@ module.exports = {
     NEW_MEMBER_BONUS: 120,  // 新客入会（如启用，在 login 云函数发）
     YUAN_TO_POINT: 1,       // 消费 1 元 = 几分（店员「按消费额加分」换算）
     POINT_TO_YUAN: 100,     // 抵现：几分 = 1 元（店员「积分抵现」换算，100 分抵 1 元）
-    INVITE_REWARD: 1500     // 邀请有礼：新人首次消费后，邀请人/新人各得（同步 cloudfunctions/addPoints）
+    INVITE_REWARD: 1500,    // 邀请有礼：新人首次消费后，邀请人/新人各得（同步 cloudfunctions/addPoints）
+    STAFF_DAILY_ADD_CAP: 50000, // 店员(非管理员)每日加分累计上限，防失控/套利（同步 addPoints）
+    BIG_OP_WARN: 5000       // 单次加/扣 ≥ 此值记大额告警（同步 addPoints）
   },
 
   // 兑换商品分类

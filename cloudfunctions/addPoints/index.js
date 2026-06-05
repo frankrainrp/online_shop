@@ -5,10 +5,19 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const _ = db.command;
+const $ = db.command.aggregate;
 
 const ALLOW_TYPES = ['消费', '签到', '活动', '兑换', '店员调整', '抵现'];
 const MAX_DELTA = 100000; // 单次加/扣分上限，防误操作/被刷
 const INVITE_REWARD = 1500; // 邀请有礼：新人首次消费后，邀请人/新人各得（同步 utils/config.js）
+const STAFF_DAILY_ADD_CAP = 50000; // 单个「店员(非管理员)」每日加分累计上限，防失控/内部套利
+const BIG_OP_WARN = 5000;          // 单次加/扣 ≥ 此值记「大额操作」告警，便于店长核对
+
+// 北京时区当日 0 点
+function todayStartCN() {
+  const local = Date.now() + 8 * 3600 * 1000;
+  return local - (local % 86400000) - 8 * 3600 * 1000;
+}
 
 exports.main = async (event) => {
   const { OPENID } = cloud.getWXContext();
@@ -33,6 +42,19 @@ exports.main = async (event) => {
   delta = Number(delta);
   if (!targetUserId || !Number.isInteger(delta) || delta === 0 || Math.abs(delta) > MAX_DELTA) {
     return { ok: false, msg: '参数错误（分值须为非零整数且不超过 ' + MAX_DELTA + '）' };
+  }
+
+  // 2.5 店员每日加分上限（管理员不限）：防失控刷分/内部套利。从审计聚合当天该店员加的正分
+  if (delta > 0 && operator.role !== 'admin') {
+    const dayStart = todayStartCN();
+    const agg = await db.collection('audit_log').aggregate()
+      .match({ openid: OPENID, ts: _.gte(dayStart), amount: _.gt(0) })
+      .group({ _id: null, sum: $.sum('$amount') })
+      .end().catch(() => ({ list: [] }));
+    const addedToday = (agg.list && agg.list[0] ? agg.list[0].sum : 0) || 0;
+    if (addedToday + delta > STAFF_DAILY_ADD_CAP) {
+      return { ok: false, msg: `今日加分已达上限（${STAFF_DAILY_ADD_CAP} 分），请明日再加或联系管理员`, capped: true };
+    }
   }
 
   // 3. 读取目标会员
@@ -75,7 +97,8 @@ exports.main = async (event) => {
     }
   });
 
-  // 5. 审计：谁、给谁、加/扣了多少、余额
+  // 5. 审计：谁、给谁、加/扣了多少、余额；amount 供日限额聚合，big 标记大额告警
+  const isBig = Math.abs(delta) >= BIG_OP_WARN;
   try {
     await db.collection('audit_log').add({
       data: {
@@ -85,7 +108,9 @@ exports.main = async (event) => {
         action: delta > 0 ? '加分' : '扣分',
         targetType: 'user',
         targetId: targetUserId,
-        summary: `${cur.nickName || '会员'} ${delta > 0 ? '+' : ''}${delta}分（${type}）→ 余 ${newBalance}`
+        amount: delta,                 // 数值，供「日限额」聚合与看板统计
+        big: isBig,                    // 大额操作告警标记
+        summary: `${isBig ? '⚠大额 ' : ''}${cur.nickName || '会员'} ${delta > 0 ? '+' : ''}${delta}分（${type}）→ 余 ${newBalance}`
       }
     });
   } catch (e) { /* 审计失败不阻断 */ }
