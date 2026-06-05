@@ -92,10 +92,14 @@ exports.main = async (event) => {
     log.push(`banners 已有 ${bnCount.total} 条，跳过`);
   }
 
-  // 4. 首次引导设管理员：仅当系统"还没有任何管理员"时允许，且只认调用者本人 openid
-  //    （防越权：杜绝任何人靠调 init 把自己/他人变管理员）
+  // 4. 首次引导设管理员
+  //    ⚠️ 安全：此路径「无需密钥」即可让首个调用者成为管理员，是潜在后门。
+  //    默认停用——开通首个店长请走「员工入口」主口令(TOTP_SECRET)，受密钥保护。
+  //    仅当确需用 init 引导时，临时在 init 云函数环境变量设 ALLOW_BOOTSTRAP=on，用完即关。
   if (event && event.makeMeStaff) {
-    if (!OPENID) {
+    if (process.env.ALLOW_BOOTSTRAP !== 'on') {
+      log.push('makeMeStaff 已停用（防无密钥提权后门）。请用「员工入口」主口令开通首个管理员；确需用 init 引导请临时设环境变量 ALLOW_BOOTSTRAP=on。');
+    } else if (!OPENID) {
       log.push('云端测试无登录态，无法设管理员。请在小程序里用「员工入口」的动态口令。');
     } else {
       const adminCount = await db.collection('staff').where({ role: 'admin' }).count();
