@@ -100,3 +100,7 @@
 - 2026-06-04 接入用户 SVG 图标（assets/wechat_icons_svg）：按对照表复制到 icons/(redeem/code/coupon/sign/activity/record/gift) 与 tab/(home/redeem/code/me)；搭自定义 tabBar（custom-tab-bar 组件，4 tab 页 onShow 设 selected）；整理 assets（设计源文件归 source/，更新 packOptions.ignore）
 - 2026-06-04 SVG 渲染坑：图标自带深色磁贴底+透明留白+滤镜文字，微信渲染不全/看不见；用 @resvg/resvg-js（tools/svg2png）渲染+去文字+cropByBBox 裁紧→透明 PNG，icon 组件+tabBar 切 PNG；尺寸多轮按用户口径调整
 - 2026-06-04 首页导航精简为 3 项（删与 tabBar 重复的 积分兑换/会员码，留 我的兑换/签到/上新）；新增搜索页 pages/search（按 name/category 正则查在售商品 + 热门词 + 结果跳详情），首页搜索栏可点进入
+- 2026-06-04 接入用户补全的 voucher/birthday PNG 图标（裁紧透明边），换到「我的」页优惠券/生日礼券
+- 2026-06-04 GitHub 备份（frankrainrp/online_shop）：清理 OIP.webp，.gitignore 排除 node_modules/assets/source；**安全：TOTP 密钥从代码移到环境变量+本地 .totp_secret，仓库不含真实密钥**
+- 2026-06-04 全局名改「是模玩店！」（UI+8 份文档）
+- 2026-06-04 **尺寸/布局真机审计（见 SIZE_DEBUG.md）**：修复 真机两列网格掉单列（calc(50%-10)凑满100%→改-14留余量，index/redeem/search）、admin .mask inset:0→写全四边、goods-detail 底栏 env() 进 padding 简写→拆开；确认横滑项 flex-shrink、box-sizing、rpx、tab 页底部留白均安全

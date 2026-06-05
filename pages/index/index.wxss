@@ -72,7 +72,7 @@
 /* 商品流网格 */
 .feed { display: flex; flex-wrap: wrap; gap: 20rpx; }
 .g-card {
-  width: calc(50% - 10rpx);
+  width: calc(50% - 14rpx);
   background: var(--bg-card); border-radius: 20rpx; overflow: hidden;
   border: 1rpx solid var(--line); box-shadow: var(--shadow);
 }
