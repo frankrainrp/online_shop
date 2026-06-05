@@ -61,6 +61,8 @@ Page({
           success: m => { if (m.confirm) this.goRecords(); }
         });
         this.load();
+      } else if (res.result.needLogin) {
+        app.promptLogin('登录后才能兑换好物');
       } else {
         wx.showToast({ title: res.result.msg || '兑换失败', icon: 'none' });
       }

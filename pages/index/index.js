@@ -7,15 +7,8 @@ Page({
     loading: true
   },
 
-  async onShow() {
+  onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ selected: 0 });
-    // 新客手机号登录拦截：已登录但未绑手机号 → 跳登录页（店员/管理员豁免，便于内部使用）
-    const g = await app.getUser();
-    const isStaffMember = g.isStaff || (g.staffState && g.staffState.exists);
-    if (g.userInfo && !g.userInfo.phone && !isStaffMember) {
-      wx.reLaunch({ url: '/pages/login/login' });
-      return;
-    }
     this.load();
   },
 
@@ -64,6 +57,8 @@ Page({
       if (res.result.ok) {
         await app.refreshUser();
         wx.showToast({ title: `签到 +${res.result.reward} 积分`, icon: 'success' });
+      } else if (res.result.needLogin) {
+        app.promptLogin('登录后才能签到领积分');
       } else {
         wx.showToast({ title: res.result.msg, icon: 'none' });
       }

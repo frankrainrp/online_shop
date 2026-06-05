@@ -78,5 +78,15 @@ App({
   // 刷新会员信息（加分/兑换后调用）
   refreshUser() {
     return this.login();
+  },
+
+  // 软引导登录：关键动作（兑换/签到）后端返回 needLogin 时调用，弹窗引导去手机号登录
+  promptLogin(msg) {
+    wx.showModal({
+      title: '需要登录',
+      content: msg || '该功能需先用微信手机号登录',
+      confirmText: '去登录',
+      success: m => { if (m.confirm) wx.navigateTo({ url: '/pages/login/login' }); }
+    });
   }
 });

@@ -64,6 +64,8 @@ Page({
           confirmText: '查看券',
           success: m => { if (m.confirm) wx.navigateTo({ url: '/pages/my-redeems/my-redeems' }); }
         });
+      } else if (res.result && res.result.needLogin) {
+        app.promptLogin('登录后才能兑换好物');
       } else {
         wx.showToast({ title: (res.result && res.result.msg) || '兑换失败', icon: 'none' });
       }
