@@ -89,35 +89,10 @@ Page({
     }
   },
 
-  // 首次启用 / 换设备重置：生成个人密钥
-  async onEnroll(e) {
-    const reset = !!(e && e.currentTarget && e.currentTarget.dataset.reset);
-    if (reset) {
-      const ok = await new Promise(r => wx.showModal({
-        title: '重置动态码', content: '重置后旧验证器立即失效，需重新扫码并登录。确认重置？',
-        success: m => r(m.confirm)
-      }));
-      if (!ok) return;
-    }
-    wx.showLoading({ title: '生成中', mask: true });
-    try {
-      const res = await wx.cloud.callFunction({ name: 'staffSecret', data: reset ? { reset: true } : {} });
-      wx.hideLoading();
-      const r = res.result || {};
-      if (r.ok) {
-        this.showEnroll(r);
-        await app.refreshUser();
-        await this.onShow();
-      } else {
-        wx.showToast({ title: r.msg || '生成失败', icon: 'none' });
-      }
-    } catch (e2) {
-      wx.hideLoading();
-      this.handleCallErr(e2, 'staffSecret');
-    }
-  },
+  // 注：店员密钥统一由店长在后台「生成码」发放（admin staffGenSecret），
+  // 已移除店员自助生成/重置通道，避免双通道与越权风险。
 
-  // 展示启用二维码（otpauth）+ 手动密钥
+  // 展示启用二维码（otpauth）+ 手动密钥（仅用于主口令引导店长首次时展示其个人密钥）
   showEnroll(enroll) {
     this.setData({ enroll: { otpauth: enroll.otpauth, secret: enroll.secret } });
     setTimeout(() => {

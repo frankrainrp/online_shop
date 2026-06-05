@@ -12,29 +12,25 @@
       <view wx:if="{{ isAdmin }}" class="btn login-btn ghost" bindtap="goDashboard">经营看板</view>
       <view wx:if="{{ isAdmin }}" class="btn login-btn ghost" bindtap="goAudit">操作日志</view>
 
-      <view class="link-row">
-        <text class="link" data-reset="1" bindtap="onEnroll">更换手机/重置动态码</text>
+      <view class="link-row center">
         <text class="link danger" bindtap="onResign">退出员工身份</text>
       </view>
     </block>
 
-    <!-- 需启用：已被加为店员，但还没生成个人密钥 -->
+    <!-- 需启用：已被加为店员，密钥由店长发放（不再自助生成） -->
     <block wx:elif="{{ mode === 'needEnroll' }}">
-      <text class="login-title">首次启用动态码</text>
-      <text class="login-sub">店长已把你加为店员。请生成你的专属密钥，扫进验证器 App 后即可用动态码登录。</text>
-      <view wx:if="{{ !enroll }}" class="btn login-btn" bindtap="onEnroll">启用我的动态码</view>
+      <text class="login-title">等待店长发放动态码</text>
+      <text class="login-sub">你已被加为店员。请让店长在「店铺管理 → 店员」点你名字旁的「生成码」，用验证器 App 扫码后，回此处输码登录。</text>
     </block>
 
-    <!-- 登录：已启用个人密钥，会话过期/未登录 -->
+    <!-- 登录：已由店长发放密钥，会话过期/未登录 -->
     <block wx:elif="{{ mode === 'login' }}">
       <text class="login-title">店员登录</text>
       <text class="login-sub">输入你验证器里的 6 位动态码（登录有效期 7 天）</text>
       <input class="login-ipt" type="number" maxlength="6" value="{{ code }}" bindinput="onInput"
              placeholder="6 位动态码" placeholder-class="ph" confirm-type="done" bindconfirm="onSubmit" />
       <view class="btn login-btn {{ submitting?'disabled':'' }}" bindtap="onSubmit">登录</view>
-      <view class="link-row center">
-        <text class="link" data-reset="1" bindtap="onEnroll">换了手机？重置动态码</text>
-      </view>
+      <text class="login-tip">换了手机或丢失验证器？请联系店长在后台「重置码」。</text>
     </block>
 
     <!-- 引导：还不是店员，用主口令成为店长 -->
