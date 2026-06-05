@@ -1,9 +1,9 @@
 <view class="page wrap">
   <!-- 非店员拦截 -->
   <view wx:if="{{ checked && !isStaff }}" class="empty">
-    <view>无权限</view>
-    <view style="margin-top:12rpx">此页面仅店员可用</view>
-    <view style="margin-top:12rpx">请把你的 openid 加入 staff 集合</view>
+    <view>未登录或登录已过期</view>
+    <view style="margin-top:12rpx">此页面仅店员可用（登录有效期 7 天）</view>
+    <view style="margin-top:12rpx">请到「员工入口」用动态码登录；若还不是店员，请联系店长添加</view>
   </view>
 
   <view wx:if="{{ isStaff }}">
@@ -28,9 +28,29 @@
       </view>
     </view>
 
-    <!-- 加扣分 -->
+    <!-- 按消费额加分 -->
     <view class="card" style="margin-top:24rpx">
-      <text class="section-title" style="margin:0 0 16rpx">② 加 / 扣 积分</text>
+      <text class="section-title" style="margin:0 0 16rpx">② 按消费额加分</text>
+      <view class="row" style="gap:16rpx">
+        <input class="ipt" type="digit" placeholder="消费金额(元)" value="{{ consumeYuan }}" bindinput="onConsumeInput" />
+        <view class="mini-btn primary" bindtap="addByConsume">加分</view>
+      </view>
+      <text class="calc-hint">消费 1 元 = {{ rateY2P }} 分　→　本次 +{{ consumePoints }} 分</text>
+    </view>
+
+    <!-- 积分抵现 -->
+    <view class="card" style="margin-top:24rpx">
+      <text class="section-title" style="margin:0 0 16rpx">③ 积分抵现</text>
+      <view class="row" style="gap:16rpx">
+        <input class="ipt" type="digit" placeholder="抵现金额(元)" value="{{ deductYuan }}" bindinput="onDeductInput" />
+        <view class="mini-btn primary" bindtap="deductCash">抵现</view>
+      </view>
+      <text class="calc-hint">{{ rateP2Y }} 分 = 1 元　→　本次 −{{ deductPoints }} 分{{ member ? '（可用 ' + member.points + ' 分）' : '' }}</text>
+    </view>
+
+    <!-- 手动加扣分（特殊调整） -->
+    <view class="card" style="margin-top:24rpx">
+      <text class="section-title" style="margin:0 0 16rpx">④ 手动加 / 扣（特殊调整）</text>
       <input class="ipt full" type="number" placeholder="输入分值" value="{{ amount }}" bindinput="onAmountInput" />
       <view class="row" style="gap:20rpx; margin-top:20rpx">
         <view class="big-btn add" bindtap="addPoints">+ 加积分</view>
@@ -40,7 +60,7 @@
 
     <!-- 核销 -->
     <view class="card" style="margin-top:24rpx">
-      <text class="section-title" style="margin:0 0 16rpx">③ 核销兑换券</text>
+      <text class="section-title" style="margin:0 0 16rpx">⑤ 核销兑换券</text>
       <view class="row" style="gap:16rpx">
         <input class="ipt" placeholder="输入兑换码 E2026..." value="{{ redeemCode }}" bindinput="onCodeInput" />
         <view class="mini-btn" bindtap="scanRedeem">扫码</view>

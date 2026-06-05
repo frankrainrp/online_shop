@@ -1,0 +1,31 @@
+<view class="page wrap">
+  <!-- 非管理员拦截 -->
+  <view wx:if="{{ checked && !isAdmin }}" class="empty">
+    <view>无权限</view>
+    <view style="margin-top:12rpx">此页面仅管理员可查看</view>
+  </view>
+
+  <block wx:if="{{ isAdmin }}">
+    <!-- 动作筛选 -->
+    <view class="filter-row">
+      <text class="filter-label">筛选</text>
+      <picker mode="selector" range="{{ actions }}" value="{{ actionIdx }}" bindchange="onActionChange">
+        <view class="filter-val">{{ actions[actionIdx] }} ▾</view>
+      </picker>
+    </view>
+
+    <!-- 日志列表 -->
+    <view wx:for="{{ list }}" wx:key="_id" class="log-row">
+      <view class="row between">
+        <text class="log-action">{{ item.action }}</text>
+        <text class="log-time">{{ item._time }}</text>
+      </view>
+      <text class="log-summary">{{ item.summary }}</text>
+      <text class="log-op">操作人：{{ item.operatorName || '—' }}</text>
+    </view>
+
+    <view wx:if="{{ !list.length && !loading }}" class="empty">暂无记录</view>
+    <view wx:if="{{ loading }}" class="loading-tip">加载中…</view>
+    <view wx:if="{{ !hasMore && list.length }}" class="loading-tip">没有更多了</view>
+  </block>
+</view>

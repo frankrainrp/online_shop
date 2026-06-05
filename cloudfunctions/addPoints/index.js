@@ -6,7 +6,7 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const _ = db.command;
 
-const ALLOW_TYPES = ['消费', '签到', '活动', '兑换', '店员调整'];
+const ALLOW_TYPES = ['消费', '签到', '活动', '兑换', '店员调整', '抵现'];
 const MAX_DELTA = 100000; // 单次加/扣分上限，防误操作/被刷
 
 exports.main = async (event) => {
@@ -22,6 +22,11 @@ exports.main = async (event) => {
     return { ok: false, msg: '无权限：仅店员可加扣积分' };
   }
   const operator = staff.data[0];
+
+  // 1.5 会话校验：登录满 7 天失效，须到员工入口重新动态码认证
+  if (!(operator.sessionExpireAt && operator.sessionExpireAt > Date.now())) {
+    return { ok: false, msg: '登录已过期，请到员工入口重新认证', expired: true };
+  }
 
   // 2. 参数校验：delta 必须是整数且在合理范围
   delta = Number(delta);
@@ -68,6 +73,21 @@ exports.main = async (event) => {
       createdAt: Date.now()
     }
   });
+
+  // 5. 审计：谁、给谁、加/扣了多少、余额
+  try {
+    await db.collection('audit_log').add({
+      data: {
+        ts: Date.now(),
+        openid: OPENID,
+        operatorName: operator.name || operator.jobNo || '',
+        action: delta > 0 ? '加分' : '扣分',
+        targetType: 'user',
+        targetId: targetUserId,
+        summary: `${cur.nickName || '会员'} ${delta > 0 ? '+' : ''}${delta}分（${type}）→ 余 ${newBalance}`
+      }
+    });
+  } catch (e) { /* 审计失败不阻断 */ }
 
   return { ok: true, balance: newBalance, orderNo };
 };

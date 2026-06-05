@@ -3,9 +3,10 @@ App({
   globalData: {
     openid: null,
     userInfo: null,   // users 集合里的会员记录
-    isStaff: false,   // 是否店员（命中 staff 集合）
-    isAdmin: false,   // 是否管理员（staff.role === 'admin'）
-    staffInfo: null,  // 店员记录
+    isStaff: false,   // 是否店员（在 staff 白名单 + 7天会话未过期）
+    isAdmin: false,   // 是否管理员（店员 + role==='admin' + 会话有效）
+    staffInfo: null,  // 店员记录（已隐去密钥）
+    staffState: null, // { exists, role, hasSecret, sessionValid, sessionExpireAt } 供员工入口页
     envId: 'cloud1-d3gbpj97870c1a7cd' // TODO: 替换成你云开发控制台里的环境 ID
   },
 
@@ -34,7 +35,8 @@ App({
         this.globalData.userInfo = r.user || null;
         this.globalData.isStaff = !!r.isStaff;
         this.globalData.staffInfo = r.staffInfo || null;
-        this.globalData.isAdmin = !!(r.staffInfo && r.staffInfo.role === 'admin');
+        this.globalData.staffState = r.staffState || null;  // 启用/会话状态，供员工入口页 UX
+        this.globalData.isAdmin = !!r.isAdmin;               // 由服务端按会话计算
         this.globalData.loginError = null;
       })
       .catch(err => {

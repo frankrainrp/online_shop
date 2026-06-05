@@ -13,7 +13,8 @@
     "pages/staff-login/staff-login",
     "pages/goods-detail/goods-detail",
     "pages/search/search",
-    "pages/rules/rules"
+    "pages/rules/rules",
+    "pages/audit/audit"
   ],
   "window": {
     "navigationBarBackgroundColor": "#161616",

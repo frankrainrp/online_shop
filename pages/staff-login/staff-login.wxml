@@ -1,24 +1,63 @@
 <view class="page wrap">
   <image class="brand-mascot" src="/assets/logos/logo.png" mode="aspectFit" />
+
   <view class="login-card">
-    <!-- 已是员工：显示身份 + 退出 -->
-    <block wx:if="{{ isStaff }}">
+    <!-- 已登录：显示身份 + 会话到期 + 入口 -->
+    <block wx:if="{{ mode === 'loggedIn' }}">
       <text class="login-title">当前身份：{{ roleText }}</text>
-      <text class="login-sub">你已通过认证。如需验证 OTP 流程，可先退出再用动态码重新认证。</text>
-      <view class="btn login-btn ghost" bindtap="onResign">退出员工身份</view>
+      <text class="login-sub">{{ expireText }}</text>
+
+      <view wx:if="{{ isAdmin }}" class="btn login-btn" bindtap="goAdmin">进入店铺管理</view>
+      <view class="btn login-btn ghost" bindtap="goStaff">店员工作台</view>
+      <view wx:if="{{ isAdmin }}" class="btn login-btn ghost" bindtap="goAudit">操作日志</view>
+
+      <view class="link-row">
+        <text class="link" data-reset="1" bindtap="onEnroll">更换手机/重置动态码</text>
+        <text class="link danger" bindtap="onResign">退出员工身份</text>
+      </view>
     </block>
 
-    <!-- 未认证：输入动态码 -->
-    <block wx:else>
-      <text class="login-title">员工入口</text>
-      <text class="login-sub">输入身份验证器里的 6 位动态码</text>
+    <!-- 需启用：已被加为店员，但还没生成个人密钥 -->
+    <block wx:elif="{{ mode === 'needEnroll' }}">
+      <text class="login-title">首次启用动态码</text>
+      <text class="login-sub">店长已把你加为店员。请生成你的专属密钥，扫进验证器 App 后即可用动态码登录。</text>
+      <view wx:if="{{ !enroll }}" class="btn login-btn" bindtap="onEnroll">启用我的动态码</view>
+    </block>
 
+    <!-- 登录：已启用个人密钥，会话过期/未登录 -->
+    <block wx:elif="{{ mode === 'login' }}">
+      <text class="login-title">店员登录</text>
+      <text class="login-sub">输入你验证器里的 6 位动态码（登录有效期 7 天）</text>
       <input class="login-ipt" type="number" maxlength="6" value="{{ code }}" bindinput="onInput"
              placeholder="6 位动态码" placeholder-class="ph" confirm-type="done" bindconfirm="onSubmit" />
-
-      <view class="btn login-btn {{ submitting?'disabled':'' }}" bindtap="onSubmit">确认</view>
-
-      <text class="login-tip">动态码每 30 秒刷新一次，来自你的身份验证器 App（Google / 腾讯 / 微软 Authenticator）。密钥由店主在 claimAdmin 云函数里设置，请勿外泄。</text>
+      <view class="btn login-btn {{ submitting?'disabled':'' }}" bindtap="onSubmit">登录</view>
+      <view class="link-row center">
+        <text class="link" data-reset="1" bindtap="onEnroll">换了手机？重置动态码</text>
+      </view>
     </block>
+
+    <!-- 引导：还不是店员，用主口令成为店长 -->
+    <block wx:else>
+      <text class="login-title">员工入口</text>
+      <text class="login-sub">输入「主口令」动态码以开通首个管理员（店长）</text>
+      <input class="login-ipt" type="number" maxlength="6" value="{{ code }}" bindinput="onInput"
+             placeholder="6 位动态码" placeholder-class="ph" confirm-type="done" bindconfirm="onSubmit" />
+      <view class="btn login-btn {{ submitting?'disabled':'' }}" bindtap="onSubmit">确认</view>
+      <text class="login-tip">主口令由店主在云函数 claimAdmin 的环境变量 TOTP_SECRET 设置，加进验证器 App 出码。普通店员请联系店长把你加入后，用「员工入口」自助启用个人密钥。</text>
+    </block>
+
+    <!-- 启用二维码区（生成后出现）：扫进验证器 -->
+    <view wx:if="{{ enroll }}" class="enroll-box">
+      <text class="enroll-title">用验证器 App 扫码添加</text>
+      <view class="qr-frame">
+        <canvas canvas-id="enrollqr" style="width:{{ qrPx }}px; height:{{ qrPx }}px; display:block"></canvas>
+      </view>
+      <text class="enroll-sub">Google / 微软 / 腾讯 身份验证器均可扫</text>
+      <view class="secret-row" bindtap="copySecret">
+        <text class="mute">手动密钥（点击复制）</text>
+        <text class="secret-val">{{ enroll.secret }}</text>
+      </view>
+      <text class="enroll-warn">⚠ 密钥仅此一次显示，请立即扫码或复制保存。添加后用上方动态码登录。</text>
+    </view>
   </view>
 </view>

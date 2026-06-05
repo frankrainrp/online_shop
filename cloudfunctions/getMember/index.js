@@ -10,6 +10,10 @@ exports.main = async (event) => {
   // 鉴权：只有店员能查会员
   const staff = await db.collection('staff').where({ openid: OPENID }).get();
   if (!staff.data.length) return { ok: false, msg: '无权限：仅店员可查询会员' };
+  const op = staff.data[0];
+  if (!(op.sessionExpireAt && op.sessionExpireAt > Date.now())) {
+    return { ok: false, msg: '登录已过期，请到员工入口重新认证', expired: true };
+  }
 
   const { memberNo } = event;
   if (!memberNo) return { ok: false, msg: '请提供会员号' };

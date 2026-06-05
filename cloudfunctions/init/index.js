@@ -5,7 +5,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
-const COLLECTIONS = ['users', 'points_log', 'goods', 'redeems', 'staff', 'updates', 'banners', 'sec_lock', 'sec_otp'];
+const COLLECTIONS = ['users', 'points_log', 'goods', 'redeems', 'staff', 'updates', 'banners', 'sec_lock', 'sec_otp', 'audit_log'];
 
 // 示例轮播图
 const BANNERS = [

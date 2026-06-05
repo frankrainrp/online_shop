@@ -30,14 +30,11 @@
 - [x] **头像上传云存储**（chooseAvatar → uploadFile → fileID 持久化）
 - [x] **新客入会礼**（首登 +120）+ **每日签到**（+10，防重复）
 - [ ] **我的优惠券**独立页（区分"优惠券类"兑换记录，展示券码/有效期）
-- [ ] **会员码真二维码**（npm weapp-qrcode，店员扫码加分/核销）
+- [x] **会员码真二维码**（自带纯 JS 编码器 utils/qrcode.js，免 npm 构建；会员号生成真二维码，店员 wx.scanCode 直接扫；会员号保留可复制兜底）
 - [x] **商品详情页** `pages/goods-detail`（大图/积分价/库存/描述 + 立即兑换；首页&兑换页点商品进入）；goods 加 desc 字段
 - [x] **icon 组件**（`components/icon`，SVG 图标统一入口，首页导航/我的宫格已迁移）
 - [ ] **连续签到**奖励递增
-- [ ] **消费积分 & 积分抵现**（核心商业逻辑）：
-  - 攒分：消费 **1 元 = 1 积分**（店员工作台「按消费额加分」，输入消费金额自动换算）
-  - 抵现：**100 积分 = 1 元**（结算时积分抵扣，店员「积分抵现」按金额扣分并记流水）
-  - 需：管理员可配比率（config.js 已有 YUAN_TO_POINT，新增 POINT_TO_YUAN=100）；店员工作台加「按消费额加分 / 积分抵现」两个入口；抵现走 addPoints 负向 + type='抵现' 流水
+- [x] **消费积分 & 积分抵现**（核心商业逻辑）：攒分「按消费额加分」1元=1分、抵现「积分抵现」100分=1元；店员工作台两入口带换算预览+余额校验+确认弹窗；抵现走 addPoints 负向(原子防扣负)+type='抵现' 流水；比率在 config.js（YUAN_TO_POINT/POINT_TO_YUAN）。比率「管理员后台可配」未做（改 config 即可，列后续）
 
 ## M6 上线准备
 - [x] 控制台配齐集合安全规则（见 SECURITY.md / SECURITY_TEST.md）
@@ -46,6 +43,7 @@
 - [ ] **填真实信息**：`pages/rules/rules.js` 的 `shopName`（营业执照店名）、`contact`（真实客服/电话）
 - [ ] **填真实信息**：小程序后台名称改「是模玩店！」；claimAdmin 重新部署前先在云函数环境变量设 `TOTP_SECRET`
 - [ ] 小程序「用户隐私保护指引」配置（获取头像/昵称必需，规则页已引用）
+- [ ] **新增集合 `audit_log` 安全规则**：锁死（仅云端可读写，客户端只经 getAudit 读）；与 staff/users 同级
 - [ ] 真机体验版 → 提交审核
 
 ## M5 残留安全建议（非阻断，见 SECURITY_TEST.md）
@@ -108,3 +106,12 @@
 - 2026-06-04 **尺寸/布局真机审计（见 SIZE_DEBUG.md）**：修复 真机两列网格掉单列（calc(50%-10)凑满100%→改-14留余量，index/redeem/search）、admin .mask inset:0→写全四边、goods-detail 底栏 env() 进 padding 简写→拆开；确认横滑项 flex-shrink、box-sizing、rpx、tab 页底部留白均安全
 - 2026-06-04 **商品多图**：goods 加 images 数组（最多9张），admin 表单 images 类型（多选上传/删除/封面标记），云函数 sanitize 校验数组+自动设 image=images[0] 兼容列表卡片；商品详情页大图改 swiper 轮播
 - 2026-06-04 **法律声明（维护商家利益）**：新增 pages/rules「积分会员服务规则」（积分获取/使用/兑换核销/有效期/行为规范/隐私/免责/最终解释权归本店/适用中国法律），「我的」+「我的积分」入口链入；兑换确认弹窗加"积分立即扣除·到店核销·不退不换"免责。店名/客服为 TODO 占位需填真实信息
+- 2026-06-05 **会员码真二维码**：新增 utils/qrcode.js（纯 JS QR 编码器，Arase/davidshimjs 核心移植，UTF-8 字节模式+自动选 version+最优掩码，免 npm 构建），drawQrcode() 用旧版 canvas-id 上下文绘制；member-code 页把会员号(users._id)生成真二维码，店员 staff 页 wx.scanCode 直接扫码加分/核销；canvas 边长按 windowWidth 把 360rpx 换算 px 保证绘制坐标与布局一致。Node 离线自测 v1/v3 矩阵 + 中文混合通过（后按用户要求去掉页面下方会员号复制块）
+- 2026-06-05 **店员登录改造：一人一密钥 + 7天会话 + 全量审计**（PM 对齐后实施）：
+  · 认证：放弃共享口令，改「一人一 TOTP 密钥」。claimAdmin 重构为动态码登录——有个人密钥用本人码续 7 天会话/角色不变；无 staff 记录用主口令(env TOTP_SECRET)引导成首个管理员并自动生成个人密钥(返回 otpauth 扫进验证器)；有记录但未启用→needEnroll。新增 staffSecret 云函数(店员自助生成/换机重置个人密钥)。base32 编解码+HOTP 经 RFC6238 官方向量(287082)+200 次 enroll 自测通过
+  · 会话：staff 加 sessionExpireAt，login 按「在白名单 且 会话未过期」算 isStaff/isAdmin 并隐去 totpSecret；addPoints/verifyRedeem/getMember/admin 全部加会话过期校验(expired:true)；app.js 改用服务端 r.isAdmin
+  · 审计：新增 audit_log 集合(init 建表)，加分/扣分/核销/登录/提权/启用·重置动态码/店员变更/商品·轮播·动态增删改 全部留痕(谁/何时/对谁/摘要)；新增 getAudit(admin+会话)；新增 pages/audit 操作日志页(筛选+触底分页)，员工入口页管理员可进
+  · 前端：staff-login 页重构为 4 态(已登录/需启用/登录/主口令引导)+otpauth 二维码扫码启用+手动密钥+会话到期显示+重置入口；staff 页无权限文案更新指向员工入口重登
+  · 说明：无短信无费用，靠验证器 App；店长吊销店员可用 admin staffResetSecret 或直接移除
+- 2026-06-05 **店长后台发放动态码 + 修脱敏漏洞**：admin staffList 原样返回 staff 全量(含 totpSecret)→脱敏，只回 hasSecret/sessionValid；staffResetSecret 升级为 staffGenSecret(生成新密钥并返回 otpauth)；admin 页店员行加「生成码/重置码」按钮→弹二维码(canvas 画 otpauth)+手动密钥，店长当场给店员扫；店员行展示「已启用/已登录/未启用动态码」状态。主口令密钥已生成写入 tools/.totp_secret(已 gitignore)
+- 2026-06-05 **消费积分 & 积分抵现（核心商业逻辑）**：config 加 POINT_TO_YUAN=100；addPoints 白名单加 '抵现'；店员工作台重构为 5 段（查会员/②按消费额加分 1元=1分/③积分抵现 100分=1元/④手动加扣/⑤核销），消费与抵现均输入金额自动换算分值+实时预览，抵现前端校验余额+确认弹窗、后端 addPoints 负向原子扣分防扣负、type='抵现' 入流水；积分明细按 delta 正负归类（抵现落「消费」筛选），无中文 class 问题

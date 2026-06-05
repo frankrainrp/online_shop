@@ -31,3 +31,5 @@
 .big-btn.sub { background: var(--bg-card-2); color: var(--text-sub); border: 1rpx solid var(--line); }
 
 .recent-row { padding: 16rpx 0; border-bottom: 1rpx solid var(--line); }
+
+.calc-hint { display: block; margin-top: 16rpx; font-size: 24rpx; color: var(--text-sub); }

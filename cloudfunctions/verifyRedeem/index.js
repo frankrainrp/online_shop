@@ -12,6 +12,9 @@ exports.main = async (event) => {
   const staff = await db.collection('staff').where({ openid: OPENID }).get();
   if (!staff.data.length) return { ok: false, msg: '无权限：仅店员可核销' };
   const operator = staff.data[0];
+  if (!(operator.sessionExpireAt && operator.sessionExpireAt > Date.now())) {
+    return { ok: false, msg: '登录已过期，请到员工入口重新认证', expired: true };
+  }
 
   if (!code) return { ok: false, msg: '请提供兑换码' };
 
@@ -31,6 +34,21 @@ exports.main = async (event) => {
     }
   });
   if (upd.stats.updated === 0) return { ok: false, msg: '该券已核销' };
+
+  // 审计
+  try {
+    await db.collection('audit_log').add({
+      data: {
+        ts: Date.now(),
+        openid: OPENID,
+        operatorName: operator.name || operator.jobNo || '',
+        action: '核销',
+        targetType: 'redeem',
+        targetId: redeem._id,
+        summary: `核销「${redeem.goodsName}」券码 ${code}`
+      }
+    });
+  } catch (e) { /* 审计失败不阻断 */ }
 
   return { ok: true, goodsName: redeem.goodsName, msg: '核销成功' };
 };

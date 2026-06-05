@@ -47,14 +47,38 @@ exports.main = async () => {
     });
   }
 
-  // 是否店员
-  const staff = await staffCol.where({ openid: OPENID }).get();
+  // 是否店员（按 7 天会话判定：在白名单 + 会话未过期才算「已登录店员」）
+  const staffRes = await staffCol.where({ openid: OPENID }).get();
+  const s = staffRes.data[0] || null;
+  const nowTs = Date.now();
+  const sessionValid = !!(s && s.sessionExpireAt && s.sessionExpireAt > nowTs);
+  const isStaff = sessionValid;
+  const isAdmin = sessionValid && s.role === 'admin';
+
+  // 回传时隐去 totpSecret（密钥绝不出云端）
+  let staffInfo = null;
+  let staffState = null;
+  if (s) {
+    staffInfo = {
+      _id: s._id, openid: s.openid, name: s.name, jobNo: s.jobNo,
+      role: s.role, sessionExpireAt: s.sessionExpireAt || 0
+    };
+    staffState = {
+      exists: true,
+      role: s.role,
+      hasSecret: !!s.totpSecret,       // 是否已启用个人密钥
+      sessionValid,                    // 会话是否有效
+      sessionExpireAt: s.sessionExpireAt || 0
+    };
+  }
 
   return {
     openid: OPENID,
     user,
     isNew,
-    isStaff: staff.data.length > 0,
-    staffInfo: staff.data[0] || null
+    isStaff,
+    isAdmin,
+    staffInfo,
+    staffState
   };
 };

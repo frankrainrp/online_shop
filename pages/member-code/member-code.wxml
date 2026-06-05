@@ -9,17 +9,12 @@
       </view>
     </view>
 
-    <!-- 二维码区（MVP 用会员号；接 weapp-qrcode 后画真二维码） -->
+    <!-- 二维码区：会员号生成真二维码，店员可直接扫码加分/核销 -->
     <view class="qr-box">
-      <canvas canvas-id="qrcanvas" class="qr-canvas"></canvas>
-      <view class="qr-placeholder">
-        <text class="mute">会员号</text>
-        <text class="member-no" bindtap="copyNo">{{ memberNo }}</text>
-        <text class="mute" style="margin-top:8rpx">点击复制 · 出示给店员加分/核销</text>
-      </view>
+      <canvas canvas-id="qrcanvas" class="qr-canvas" style="width:{{ qrPx }}px; height:{{ qrPx }}px"></canvas>
     </view>
 
-    <text class="sub" style="margin-top:24rpx">向店员出示此会员号即可积分或兑换</text>
+    <text class="sub" style="margin-top:32rpx">向店员出示二维码即可积分或兑换</text>
     <view class="refresh" bindtap="refresh">⟳ 刷新</view>
   </view>
 </view>

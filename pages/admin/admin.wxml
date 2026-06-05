@@ -24,6 +24,7 @@
         </view>
         <view class="adm-ops">
           <view wx:if="{{ tab !== 'staff' }}" class="op-btn" data-item="{{ item }}" bindtap="onEdit">编辑</view>
+          <view wx:if="{{ tab === 'staff' }}" class="op-btn" data-item="{{ item }}" bindtap="onGenSecret">{{ item.hasSecret ? '重置码' : '生成码' }}</view>
           <view class="op-btn del" data-id="{{ item._id }}" bindtap="onRemove">删除</view>
         </view>
       </view>
@@ -86,6 +87,23 @@
         </scroll-view>
 
         <view class="btn sheet-save {{ saving?'disabled':'' }}" bindtap="onSave">保存</view>
+      </view>
+    </view>
+
+    <!-- 店员动态码二维码弹层 -->
+    <view wx:if="{{ secretModal }}" class="mask" bindtap="closeSecretModal">
+      <view class="secret-card" catchtap="noop">
+        <text class="title">{{ secretModal.name }} 的动态码</text>
+        <text class="mute" style="margin-top:8rpx">让该店员用验证器 App 扫码添加</text>
+        <view class="qr-frame">
+          <canvas canvas-id="staffqr" style="width:{{ qrPx }}px; height:{{ qrPx }}px; display:block"></canvas>
+        </view>
+        <view class="secret-row" bindtap="copyStaffSecret">
+          <text class="mute">手动密钥（点击复制）</text>
+          <text class="secret-val">{{ secretModal.secret }}</text>
+        </view>
+        <text class="warn">⚠ 密钥仅此一次显示，请当场让店员扫码或复制保存。添加后店员到「员工入口」输码登录（7 天有效）。</text>
+        <view class="btn" bindtap="closeSecretModal">完成</view>
       </view>
     </view>
   </view>

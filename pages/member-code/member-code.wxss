@@ -17,15 +17,8 @@
   display: flex; align-items: center; justify-content: center;
   position: relative;
 }
-.qr-canvas { width: 0; height: 0; }
-.qr-placeholder { display: flex; flex-direction: column; align-items: center; padding: 0 24rpx; }
-.qr-ph-icon { font-size: 80rpx; }
-.member-no {
-  margin-top: 12rpx;
-  font-size: 30rpx; font-weight: 700; color: #1a1a1a;
-  word-break: break-all; text-align: center;
-}
-.qr-placeholder .mute { color: #888; }
+/* canvas 实际边长由 JS 按屏宽换算后内联设置（与绘制 px 一致），居中显示 */
+.qr-canvas { display: block; }
 
 .refresh {
   margin-top: 28rpx;

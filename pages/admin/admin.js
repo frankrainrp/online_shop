@@ -1,4 +1,5 @@
 const app = getApp();
+const { drawQrcode } = require('../../utils/qrcode.js');
 
 // 各资源的表单字段配置
 const FORM = {
@@ -46,7 +47,16 @@ Page({
     formFields: FORM.goods,
     showForm: false,
     form: {},        // 当前编辑对象
-    saving: false
+    saving: false,
+    secretModal: null, // 店员动态码二维码弹层 { name, secret, otpauth }
+    qrPx: 220
+  },
+
+  onLoad() {
+    try {
+      const info = wx.getSystemInfoSync();
+      this.setData({ qrPx: Math.round((400 / 750) * info.windowWidth) });
+    } catch (e) { /* 默认 220 */ }
   },
 
   async onShow() {
@@ -72,7 +82,11 @@ Page({
         let title = '', sub = '';
         if (tab === 'goods') { title = it.name; sub = `${it.cost}积分 · 库存${it.stock} · ${it.status === 'on' ? '已上架' : '已下架'}`; }
         else if (tab === 'banners') { title = it.title || '(无标题)'; sub = `排序 ${it.sort}`; }
-        else if (tab === 'staff') { title = it.name || it.openid; sub = `${it.role === 'admin' ? '管理员' : '店员'} · 工号${it.jobNo || '-'}`; }
+        else if (tab === 'staff') {
+          title = it.name || it.openid;
+          const codeState = it.hasSecret ? (it.sessionValid ? '已登录' : '已启用动态码') : '未启用动态码';
+          sub = `${it.role === 'admin' ? '管理员' : '店员'} · 工号${it.jobNo || '-'} · ${codeState}`;
+        }
         else { title = it.title; sub = it.type; }
         return { ...it, _title: title, _sub: sub, _img: it.image || '' };
       });
@@ -221,6 +235,45 @@ Page({
       this.setData({ saving: false });
       wx.showToast({ title: '网络异常', icon: 'none' });
     }
+  },
+
+  // 店长为店员生成/重置动态码密钥 → 弹二维码让店员当场扫进验证器
+  async onGenSecret(e) {
+    const item = e.currentTarget.dataset.item;
+    const reset = !!item.hasSecret;
+    const ok = await new Promise(r => wx.showModal({
+      title: reset ? '重置动态码' : '生成动态码',
+      content: reset
+        ? `将为「${item.name || '该店员'}」生成新密钥，旧验证器立即失效，需重新扫码登录。继续？`
+        : `为「${item.name || '该店员'}」生成动态码密钥，生成后让其用验证器扫码。继续？`,
+      success: m => r(m.confirm)
+    }));
+    if (!ok) return;
+    wx.showLoading({ title: '生成中', mask: true });
+    try {
+      const res = await wx.cloud.callFunction({ name: 'admin', data: { action: 'staffGenSecret', collection: 'staff', id: item._id } });
+      wx.hideLoading();
+      const r = res.result || {};
+      if (r.ok) {
+        this.setData({ secretModal: { name: r.name, secret: r.secret, otpauth: r.otpauth } });
+        setTimeout(() => {
+          drawQrcode({ canvasId: 'staffqr', ctxScope: this, text: r.otpauth, width: this.data.qrPx, height: this.data.qrPx, dark: '#151515', light: '#ffffff' });
+        }, 60);
+        this.loadList();
+      } else {
+        wx.showToast({ title: r.msg || '生成失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: '网络异常', icon: 'none' });
+    }
+  },
+
+  closeSecretModal() { this.setData({ secretModal: null }); },
+
+  copyStaffSecret() {
+    if (!this.data.secretModal) return;
+    wx.setClipboardData({ data: this.data.secretModal.secret, success: () => wx.showToast({ title: '密钥已复制', icon: 'none' }) });
   },
 
   async onRemove(e) {
