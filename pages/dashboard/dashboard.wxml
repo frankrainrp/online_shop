@@ -1,0 +1,53 @@
+<view class="page wrap">
+  <!-- 非管理员拦截 -->
+  <view wx:if="{{ checked && !isAdmin }}" class="empty">
+    <view>无权限</view>
+    <view style="margin-top:12rpx">此页面仅管理员可查看</view>
+  </view>
+
+  <block wx:if="{{ isAdmin }}">
+    <!-- 时间范围 -->
+    <view class="range-tabs">
+      <view wx:for="{{ ranges }}" wx:key="key"
+            class="range-tab {{ range===item.key?'on':'' }}" data-r="{{ item.key }}" bindtap="switchRange">{{ item.name }}</view>
+    </view>
+
+    <!-- 核心指标 -->
+    <view class="kpi-hero">
+      <text class="kpi-label">营业额（估算·元）</text>
+      <text class="kpi-money">¥{{ stats ? stats.sales : '—' }}</text>
+      <text class="kpi-sub">{{ stats ? stats.txCount : 0 }} 笔消费 · 按 1元=1分 估算</text>
+    </view>
+
+    <!-- 指标网格 -->
+    <view class="grid">
+      <view class="cell">
+        <text class="cell-num">{{ stats ? stats.newMembers : '—' }}</text>
+        <text class="cell-label">新增会员</text>
+      </view>
+      <view class="cell">
+        <text class="cell-num">{{ stats ? stats.verified : '—' }}</text>
+        <text class="cell-label">核销兑换</text>
+      </view>
+      <view class="cell">
+        <text class="cell-num">{{ stats ? stats.pointsIssued : '—' }}</text>
+        <text class="cell-label">积分发放</text>
+      </view>
+      <view class="cell">
+        <text class="cell-num">{{ stats ? stats.pointsUsed : '—' }}</text>
+        <text class="cell-label">积分消耗</text>
+      </view>
+      <view class="cell">
+        <text class="cell-num">¥{{ stats ? stats.deductYuan : '—' }}</text>
+        <text class="cell-label">积分抵现让利</text>
+      </view>
+      <view class="cell">
+        <text class="cell-num">{{ stats ? stats.txCount : '—' }}</text>
+        <text class="cell-label">消费笔数</text>
+      </view>
+    </view>
+
+    <view wx:if="{{ loading }}" class="loading-tip">加载中…</view>
+    <text class="foot-tip">下拉可刷新 · 数据来自积分流水与会员/兑换记录</text>
+  </block>
+</view>

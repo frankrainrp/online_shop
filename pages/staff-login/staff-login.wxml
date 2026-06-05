@@ -9,6 +9,7 @@
 
       <view wx:if="{{ isAdmin }}" class="btn login-btn" bindtap="goAdmin">进入店铺管理</view>
       <view class="btn login-btn ghost" bindtap="goStaff">店员工作台</view>
+      <view wx:if="{{ isAdmin }}" class="btn login-btn ghost" bindtap="goDashboard">经营看板</view>
       <view wx:if="{{ isAdmin }}" class="btn login-btn ghost" bindtap="goAudit">操作日志</view>
 
       <view class="link-row">

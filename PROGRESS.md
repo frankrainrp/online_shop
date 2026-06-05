@@ -115,3 +115,5 @@
   · 说明：无短信无费用，靠验证器 App；店长吊销店员可用 admin staffResetSecret 或直接移除
 - 2026-06-05 **店长后台发放动态码 + 修脱敏漏洞**：admin staffList 原样返回 staff 全量(含 totpSecret)→脱敏，只回 hasSecret/sessionValid；staffResetSecret 升级为 staffGenSecret(生成新密钥并返回 otpauth)；admin 页店员行加「生成码/重置码」按钮→弹二维码(canvas 画 otpauth)+手动密钥，店长当场给店员扫；店员行展示「已启用/已登录/未启用动态码」状态。主口令密钥已生成写入 tools/.totp_secret(已 gitignore)
 - 2026-06-05 **消费积分 & 积分抵现（核心商业逻辑）**：config 加 POINT_TO_YUAN=100；addPoints 白名单加 '抵现'；店员工作台重构为 5 段（查会员/②按消费额加分 1元=1分/③积分抵现 100分=1元/④手动加扣/⑤核销），消费与抵现均输入金额自动换算分值+实时预览，抵现前端校验余额+确认弹窗、后端 addPoints 负向原子扣分防扣负、type='抵现' 入流水；积分明细按 delta 正负归类（抵现落「消费」筛选），无中文 class 问题
+- 2026-06-05 **《上线操作清单.md》**：主体认证/隐私指引/类目/云端部署(含 TOTP_SECRET 环境变量+存储权限第1档+audit_log 安全规则)/首个管理员/真机自测/体验版提交，逐条可勾选；附费用备忘
+- 2026-06-05 **增值功能①经营看板**（二期筹码，先落地）：新增 getDashboard 云函数(admin+会话, aggregate 聚合，数据复用 points_log/users/redeems：营业额=消费分总和÷1、抵现让利=抵现分÷100、新增会员、核销数、积分发放/消耗、消费笔数；今日按北京零点/近7天/近30天)；新增 pages/dashboard(范围切换+营业额 Hero+6 指标卡+下拉刷新，仅 admin)；员工入口加「经营看板」入口

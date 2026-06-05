@@ -137,6 +137,7 @@ Page({
   goAdmin() { wx.navigateTo({ url: '/pages/admin/admin' }); },
   goStaff() { wx.navigateTo({ url: '/pages/staff/staff' }); },
   goAudit() { wx.navigateTo({ url: '/pages/audit/audit' }); },
+  goDashboard() { wx.navigateTo({ url: '/pages/dashboard/dashboard' }); },
 
   // 退出员工/管理员身份
   async onResign() {
