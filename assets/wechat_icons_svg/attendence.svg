@@ -1,0 +1,49 @@
+<svg width="80" height="80" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="redGradCheckin" x1="22" y1="14" x2="98" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF3B35"/>
+      <stop offset="1" stop-color="#B91518"/>
+    </linearGradient>
+
+    <linearGradient id="darkGradCheckin" x1="30" y1="18" x2="92" y2="106" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2A2A2E"/>
+      <stop offset="1" stop-color="#151517"/>
+    </linearGradient>
+
+    <filter id="shadowCheckin" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- dark rounded background -->
+  <rect x="10" y="10" width="100" height="100" rx="26" fill="url(#darkGradCheckin)" filter="url(#shadowCheckin)"/>
+
+  <!-- red glow -->
+  <circle cx="60" cy="60" r="34" fill="#FF2D2D" opacity="0.14"/>
+
+  <!-- main red circle -->
+  <circle cx="60" cy="60" r="29" fill="url(#redGradCheckin)"/>
+
+  <!-- calendar body -->
+  <rect x="39" y="39" width="42" height="42" rx="8" fill="#FFFFFF"/>
+
+  <!-- calendar top bar -->
+  <path d="M39 48C39 43 43 39 48 39H72C77 39 81 43 81 48V53H39V48Z"
+        fill="#3B1617"
+        opacity="0.9"/>
+
+  <!-- calendar rings -->
+  <rect x="49" y="34" width="6" height="12" rx="3" fill="#FFFFFF"/>
+  <rect x="65" y="34" width="6" height="12" rx="3" fill="#FFFFFF"/>
+
+  <!-- check mark -->
+  <path d="M49 65L57 73L72 56"
+        fill="none"
+        stroke="#E92525"
+        stroke-width="6"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- small highlight -->
+  <circle cx="45" cy="36" r="3" fill="#FFFFFF" opacity="0.7"/>
+</svg>

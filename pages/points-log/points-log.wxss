@@ -1,0 +1,15 @@
+.tabs { display: flex; gap: 16rpx; padding: 24rpx 0; }
+.tab {
+  font-size: 26rpx; color: var(--text-sub);
+  padding: 12rpx 28rpx; border-radius: 999rpx; background: var(--bg-card);
+}
+.tab.on { background: var(--primary); color: #fff; }
+
+.log-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28rpx 4rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+.delta { font-size: 34rpx; font-weight: 700; }
+.delta.plus { color: var(--gold); }
+.delta.minus { color: var(--text-sub); }

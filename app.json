@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/member/member",
+    "pages/points/points",
+    "pages/points-log/points-log",
+    "pages/redeem/redeem",
+    "pages/my-redeems/my-redeems",
+    "pages/member-code/member-code",
+    "pages/goods-update/goods-update",
+    "pages/staff/staff",
+    "pages/admin/admin",
+    "pages/staff-login/staff-login",
+    "pages/goods-detail/goods-detail",
+    "pages/search/search"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#161616",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "是模玩店！",
+    "backgroundColor": "#151515",
+    "backgroundColorTop": "#161616",
+    "backgroundColorBottom": "#151515",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#888888",
+    "selectedColor": "#e5332a",
+    "backgroundColor": "#1b1b1d",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/redeem/redeem", "text": "兑换" },
+      { "pagePath": "pages/member-code/member-code", "text": "会员码" },
+      { "pagePath": "pages/member/member", "text": "我的" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

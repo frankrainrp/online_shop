@@ -1,0 +1,31 @@
+.page { padding-bottom: 250rpx; }
+.profile { display: flex; align-items: center; margin-top: 32rpx; }
+.avatar-btn { padding: 0; margin: 0; line-height: 0; background: transparent; width: 120rpx; height: 120rpx; border-radius: 50%; overflow: hidden; }
+.avatar-btn::after { border: none; }
+.avatar { width: 120rpx; height: 120rpx; border-radius: 50%; background: var(--bg-card-2); }
+.edit-hint { font-size: 20rpx; color: var(--text-mute); margin-top: 12rpx; }
+.nick {
+  font-size: 36rpx; font-weight: 600; color: var(--text);
+  background: transparent; width: 100%;
+}
+
+.points-card {
+  margin-top: 32rpx;
+  background: var(--grad-points);
+  border-radius: 24rpx;
+  padding: 36rpx;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.grid4 { display: flex; background: var(--bg-card); border: 1rpx solid var(--line); border-radius: 24rpx; padding: 32rpx 0; }
+.g4 { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12rpx; }
+.g4-ic { width: 64rpx; height: 64rpx; border-radius: 20rpx; background: rgba(229,51,42,0.08); }
+
+.list { background: var(--bg-card); border: 1rpx solid var(--line); border-radius: 24rpx; overflow: hidden; }
+.list-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 30rpx 32rpx; border-bottom: 1rpx solid var(--line);
+}
+.list-row:last-child { border-bottom: none; }
+
+.footer { text-align: center; color: var(--text-mute); font-size: 22rpx; padding: 60rpx 0 20rpx; }

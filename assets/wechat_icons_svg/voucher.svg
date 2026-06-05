@@ -1,0 +1,53 @@
+<svg width="80" height="80" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="redGradCoupon" x1="24" y1="20" x2="96" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF3B35"/>
+      <stop offset="1" stop-color="#B91518"/>
+    </linearGradient>
+  </defs>
+
+  <!-- red glow -->
+  <circle cx="60" cy="60" r="35" fill="#FF2D2D" opacity="0.15"/>
+
+  <!-- main red circle -->
+  <circle cx="60" cy="60" r="30" fill="url(#redGradCoupon)"/>
+
+  <!-- coupon ticket -->
+  <path d="M42 49
+           H74
+           C76.8 49 79 51.2 79 54
+           V57
+           C76.8 57 75 58.8 75 61
+           C75 63.2 76.8 65 79 65
+           V68
+           C79 70.8 76.8 73 74 73
+           H42
+           C39.2 73 37 70.8 37 68
+           V65
+           C39.2 65 41 63.2 41 61
+           C41 58.8 39.2 57 37 57
+           V54
+           C37 51.2 39.2 49 42 49Z"
+        fill="#FFFFFF"/>
+
+  <!-- dashed cut line -->
+  <path d="M58 52V70"
+        stroke="#D91F22"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-dasharray="2.8 3.2"/>
+
+  <!-- percent icon -->
+  <circle cx="49" cy="56" r="3.2" fill="#D91F22"/>
+  <circle cx="67" cy="66" r="3.2" fill="#D91F22"/>
+  <path d="M52 66L64 56"
+        fill="none"
+        stroke="#D91F22"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <!-- small sparkle -->
+  <path d="M78 41L79.8 45L84 46.8L79.8 48.5L78 52.5L76.2 48.5L72 46.8L76.2 45L78 41Z"
+        fill="#FFFFFF"
+        opacity="0.9"/>
+</svg>

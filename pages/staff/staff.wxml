@@ -1,0 +1,59 @@
+<view class="page wrap">
+  <!-- 非店员拦截 -->
+  <view wx:if="{{ checked && !isStaff }}" class="empty">
+    <view>无权限</view>
+    <view style="margin-top:12rpx">此页面仅店员可用</view>
+    <view style="margin-top:12rpx">请把你的 openid 加入 staff 集合</view>
+  </view>
+
+  <view wx:if="{{ isStaff }}">
+    <!-- 查询会员 -->
+    <view class="card" style="margin-top:24rpx">
+      <text class="section-title" style="margin:0 0 16rpx">① 查询会员</text>
+      <view class="row" style="gap:16rpx">
+        <input class="ipt" placeholder="输入会员号" value="{{ memberNo }}" bindinput="onMemberInput" />
+        <view class="mini-btn" bindtap="scanMember">扫码</view>
+        <view class="mini-btn primary" bindtap="queryMember">查询</view>
+      </view>
+
+      <view wx:if="{{ member }}" class="member-box">
+        <view class="row between">
+          <text class="title">{{ member.nickName }}</text>
+          <text class="tag-gold tag">{{ member.level }}</text>
+        </view>
+        <view class="row between" style="margin-top:12rpx">
+          <text class="mute">可用积分</text>
+          <text class="points-num" style="font-size:44rpx">{{ member.points }}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加扣分 -->
+    <view class="card" style="margin-top:24rpx">
+      <text class="section-title" style="margin:0 0 16rpx">② 加 / 扣 积分</text>
+      <input class="ipt full" type="number" placeholder="输入分值" value="{{ amount }}" bindinput="onAmountInput" />
+      <view class="row" style="gap:20rpx; margin-top:20rpx">
+        <view class="big-btn add" bindtap="addPoints">+ 加积分</view>
+        <view class="big-btn sub" bindtap="subPoints">− 扣积分</view>
+      </view>
+    </view>
+
+    <!-- 核销 -->
+    <view class="card" style="margin-top:24rpx">
+      <text class="section-title" style="margin:0 0 16rpx">③ 核销兑换券</text>
+      <view class="row" style="gap:16rpx">
+        <input class="ipt" placeholder="输入兑换码 E2026..." value="{{ redeemCode }}" bindinput="onCodeInput" />
+        <view class="mini-btn" bindtap="scanRedeem">扫码</view>
+        <view class="mini-btn primary" bindtap="doVerify">核销</view>
+      </view>
+    </view>
+
+    <!-- 最近操作 -->
+    <view wx:if="{{ recent.length }}" class="card" style="margin-top:24rpx">
+      <text class="section-title" style="margin:0 0 16rpx">最近操作</text>
+      <view wx:for="{{ recent }}" wx:key="t" class="recent-row">
+        <text class="sub">{{ item.text }}</text>
+      </view>
+    </view>
+  </view>
+</view>

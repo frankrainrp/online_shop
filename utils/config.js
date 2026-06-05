@@ -1,0 +1,30 @@
+// utils/config.js —— 全局业务配置（改规则集中在这里）
+// 注意：云函数是独立部署的，不能 import 本文件；云函数里的同名常量需同步修改（已在各云函数注释标出）
+
+module.exports = {
+  // 集合名（和云开发数据库一致）
+  COLLECTIONS: {
+    USERS: 'users',
+    POINTS_LOG: 'points_log',
+    GOODS: 'goods',
+    REDEEMS: 'redeems',
+    STAFF: 'staff',
+    UPDATES: 'updates'
+  },
+
+  // 积分规则（前端展示用；真正发分逻辑在云函数）
+  POINT_RULES: {
+    SIGN_REWARD: 10,        // 每日签到 —— 同步：cloudfunctions/signIn
+    NEW_MEMBER_BONUS: 120,  // 新客入会（如启用，在 login 云函数发）
+    YUAN_TO_POINT: 1        // 消费 1 元 = 几分（店员加分时换算）
+  },
+
+  // 兑换商品分类
+  GOODS_CATEGORIES: ['全部', '优惠券', '周边', '贴纸', '盲盒'],
+
+  // 兑换单状态
+  REDEEM_STATUS: { PENDING: '待核销', DONE: '已完成', CANCELED: '已取消' },
+
+  // 动态分类
+  UPDATE_TYPES: ['全部', '新品到货', '活动预告', '店铺公告']
+};

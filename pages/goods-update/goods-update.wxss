@@ -1,0 +1,15 @@
+.tabs { display: flex; gap: 16rpx; padding: 24rpx 0; overflow-x: auto; }
+.tab { flex-shrink: 0; font-size: 26rpx; color: var(--text-sub); padding: 12rpx 26rpx; border-radius: 999rpx; background: var(--bg-card); }
+.tab.on { background: var(--primary); color: #fff; }
+
+.update-card {
+  display: flex; align-items: flex-start;
+  background: var(--bg-card);
+  border: 1rpx solid var(--line);
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+.u-img { width: 160rpx; height: 160rpx; border-radius: 16rpx; background: var(--bg-card-2); flex-shrink: 0; }
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ellipsis2 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }

@@ -1,0 +1,39 @@
+.page { padding-bottom: 160rpx; }
+
+.hero-img { width: 100%; height: 600rpx; background: var(--bg-card-2); display: block; }
+.hero-ph { display: flex; align-items: center; justify-content: center; color: var(--text-mute); font-size: 28rpx; }
+
+.info-card {
+  background: var(--bg-card); border: 1rpx solid var(--line);
+  border-radius: 20rpx; padding: 28rpx; margin-top: 20rpx;
+}
+.price-row { display: flex; align-items: baseline; }
+.price-num { font-size: 56rpx; font-weight: 800; color: var(--primary); }
+.price-unit { font-size: 26rpx; color: var(--primary); margin-left: 6rpx; }
+.cat-tag { margin-left: auto; align-self: center; font-size: 22rpx; color: var(--text-sub); background: var(--bg-card-2); padding: 6rpx 18rpx; border-radius: 8rpx; }
+.g-name { display: block; font-size: 34rpx; font-weight: 600; color: var(--text); margin-top: 16rpx; }
+.meta-row { display: flex; justify-content: space-between; margin-top: 18rpx; }
+
+.desc-card {
+  background: var(--bg-card); border: 1rpx solid var(--line);
+  border-radius: 20rpx; padding: 28rpx; margin-top: 20rpx;
+}
+.desc-title { display: flex; align-items: center; gap: 14rpx; margin-bottom: 18rpx; }
+.desc-title .bar { width: 8rpx; height: 30rpx; background: var(--primary); border-radius: 999rpx; }
+.desc-title text { font-size: 30rpx; font-weight: 600; color: var(--text); }
+.desc-text { font-size: 27rpx; color: var(--text-sub); line-height: 1.7; }
+
+.mypts { margin-top: 24rpx; font-size: 26rpx; color: var(--text-sub); }
+.mypts-num { color: var(--coin); font-weight: 700; }
+
+.bottombar {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom));
+  background: var(--bg-elevated); border-top: 1rpx solid var(--line);
+}
+.redeem-btn {
+  background: var(--grad-points); color: #fff;
+  text-align: center; font-size: 32rpx; font-weight: 600;
+  padding: 26rpx 0; border-radius: 999rpx;
+}
+.redeem-btn.disabled { background: var(--bg-card-2); color: var(--text-mute); }

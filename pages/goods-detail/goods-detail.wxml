@@ -1,0 +1,39 @@
+<view class="page" wx:if="{{ goods }}">
+  <!-- 大图 -->
+  <image wx:if="{{ goods.image }}" class="hero-img" src="{{ goods.image }}" mode="aspectFill" />
+  <view wx:else class="hero-img hero-ph">暂无图片</view>
+
+  <!-- 主信息 -->
+  <view class="wrap">
+    <view class="info-card">
+      <view class="price-row">
+        <text class="price-num">{{ goods.cost }}</text>
+        <text class="price-unit">积分</text>
+        <view class="cat-tag">{{ goods.category }}</view>
+      </view>
+      <text class="g-name">{{ goods.name }}</text>
+      <view class="meta-row">
+        <text class="mute">库存 {{ goods.stock }}</text>
+        <text class="mute">{{ goods.status === 'on' ? '在售' : '已下架' }}</text>
+      </view>
+    </view>
+
+    <!-- 描述 -->
+    <view class="desc-card">
+      <view class="desc-title"><view class="bar"></view><text>商品详情</text></view>
+      <text class="desc-text">{{ goods.desc || '店家很懒，暂未填写商品描述～' }}</text>
+    </view>
+
+    <!-- 我的积分提示 -->
+    <view class="mypts">我的积分：<text class="mypts-num">{{ user ? user.points : 0 }}</text></view>
+  </view>
+
+  <!-- 底部兑换栏 -->
+  <view class="bottombar">
+    <view class="redeem-btn {{ canRedeem ? '' : 'disabled' }}" bindtap="onRedeem">
+      {{ goods.stock <= 0 ? '已兑完' : (goods.status !== 'on' ? '已下架' : (user && user.points >= goods.cost ? '立即兑换' : '积分不足')) }}
+    </view>
+  </view>
+</view>
+
+<view wx:elif="{{ !loading }}" class="empty">商品不存在或已下架</view>

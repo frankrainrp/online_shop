@@ -1,0 +1,49 @@
+{
+  "description": "模玩店积分会员小程序",
+  "miniprogramRoot": "./",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
+  },
+  "appid": "wxd5d128b971c9389c",
+  "projectname": "moyu-shop",
+  "libVersion": "latest",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [
+      { "type": "suffix", "value": ".psd" },
+      { "type": "suffix", "value": ".ai" },
+      { "type": "glob", "value": "assets/source/*" },
+      { "type": "glob", "value": "assets/wechat_icons_svg/*" },
+      { "type": "glob", "value": "seed/*" },
+      { "type": "folder", "value": "tools" },
+      { "type": "folder", "value": "node_modules" }
+    ],
+    "include": []
+  },
+  "editorSetting": {}
+}

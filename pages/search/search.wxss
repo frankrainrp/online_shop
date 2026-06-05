@@ -1,0 +1,62 @@
+.page { min-height: 100vh; background: var(--bg); }
+
+/* 搜索栏 */
+.sbar { display: flex; align-items: center; gap: 16rpx; padding: 16rpx 24rpx; }
+.sbox {
+  flex: 1; display: flex; align-items: center;
+  background: var(--bg-card); border: 1rpx solid var(--line);
+  border-radius: 999rpx; padding: 14rpx 26rpx;
+}
+.s-ico {
+  width: 26rpx; height: 26rpx; margin-right: 14rpx; border-radius: 50%;
+  border: 4rpx solid var(--text-mute); box-sizing: content-box; position: relative; flex-shrink: 0;
+}
+.s-ico::after {
+  content: ''; position: absolute; right: -10rpx; bottom: -8rpx;
+  width: 14rpx; height: 4rpx; background: var(--text-mute); transform: rotate(45deg); border-radius: 2rpx;
+}
+.s-input { flex: 1; font-size: 28rpx; color: var(--text); }
+.s-ph { color: var(--text-mute); }
+.s-clear {
+  width: 36rpx; height: 36rpx; line-height: 32rpx; text-align: center;
+  color: var(--text-mute); font-size: 32rpx; flex-shrink: 0;
+}
+.s-btn { font-size: 28rpx; color: var(--primary); flex-shrink: 0; }
+
+/* 类别 filter */
+.cat-bar { white-space: nowrap; padding: 8rpx 24rpx 4rpx; }
+.cchip {
+  display: inline-block; margin-right: 16rpx;
+  font-size: 26rpx; color: var(--text-sub);
+  background: var(--bg-card); border: 1rpx solid var(--line);
+  padding: 10rpx 28rpx; border-radius: 999rpx;
+}
+.cchip.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* 积分 filter（排序） */
+.sort-bar { display: flex; align-items: center; gap: 16rpx; padding: 16rpx 24rpx; }
+.sort-label { font-size: 26rpx; color: var(--text-mute); }
+.sopt {
+  font-size: 24rpx; color: var(--text-sub);
+  padding: 8rpx 22rpx; border-radius: 999rpx; background: var(--bg-card-2);
+}
+.sopt.on { background: rgba(229,51,42,0.16); color: var(--primary); }
+
+/* 结果网格 */
+.feed { display: flex; flex-wrap: wrap; gap: 20rpx; margin-top: 16rpx; }
+.g-card {
+  width: calc(50% - 10rpx);
+  background: var(--bg-card); border: 1rpx solid var(--line);
+  border-radius: 20rpx; overflow: hidden;
+}
+.g-img { width: 100%; height: 340rpx; background: var(--bg-card-2); }
+.g-body { padding: 18rpx 20rpx 22rpx; }
+.g-name {
+  font-size: 26rpx; color: var(--text); line-height: 1.4;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; min-height: 72rpx;
+}
+.g-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 12rpx; }
+.g-price { display: flex; align-items: baseline; }
+.g-price-num { font-size: 36rpx; font-weight: 700; color: var(--primary); }
+.g-price-unit { font-size: 22rpx; color: var(--primary); margin-left: 4rpx; }
+.g-cat { font-size: 20rpx; color: var(--text-mute); background: var(--bg-card-2); padding: 4rpx 14rpx; border-radius: 8rpx; }

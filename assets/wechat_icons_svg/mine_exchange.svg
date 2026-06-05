@@ -1,0 +1,59 @@
+<svg width="80" height="80" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="redGradRedeemMine" x1="22" y1="14" x2="98" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF3B35"/>
+      <stop offset="1" stop-color="#B91518"/>
+    </linearGradient>
+
+    <linearGradient id="darkGradRedeemMine" x1="30" y1="18" x2="92" y2="106" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2A2A2E"/>
+      <stop offset="1" stop-color="#151517"/>
+    </linearGradient>
+
+    <filter id="shadowRedeemMine" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- dark rounded background -->
+  <rect x="10" y="10" width="100" height="100" rx="26" fill="url(#darkGradRedeemMine)" filter="url(#shadowRedeemMine)"/>
+
+  <!-- red glow -->
+  <circle cx="60" cy="60" r="34" fill="#FF2D2D" opacity="0.14"/>
+
+  <!-- main red circle -->
+  <circle cx="60" cy="60" r="29" fill="url(#redGradRedeemMine)"/>
+
+  <!-- gift box lid -->
+  <rect x="40" y="46" width="40" height="10" rx="3.5" fill="#FFFFFF"/>
+
+  <!-- gift box body -->
+  <rect x="43" y="56" width="34" height="24" rx="4" fill="#FFFFFF"/>
+
+  <!-- ribbon vertical -->
+  <rect x="57" y="46" width="6" height="34" rx="2" fill="#D91F22"/>
+
+  <!-- ribbon horizontal on lid -->
+  <rect x="40" y="49.5" width="40" height="3.5" rx="1.75" fill="#D91F22"/>
+
+  <!-- bow -->
+  <path d="M54 46
+           C50 42, 49 37, 54 37
+           C57 37, 59 40, 60 43
+           C61 40, 63 37, 66 37
+           C71 37, 70 42, 66 46
+           Z"
+        fill="#FFFFFF"/>
+
+  <!-- check badge -->
+  <circle cx="77" cy="76" r="9" fill="#FFFFFF"/>
+  <path d="M73.5 76L76 78.5L80.5 73.5"
+        fill="none"
+        stroke="#E92525"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- small highlight -->
+  <circle cx="45" cy="39" r="3" fill="#FFFFFF" opacity="0.7"/>
+</svg>

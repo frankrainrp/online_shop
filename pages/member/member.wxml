@@ -1,0 +1,68 @@
+<view class="page wrap">
+  <!-- 头部会员卡 -->
+  <view class="profile">
+    <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{ user.avatarUrl || '/assets/placeholder/avatar.png' }}" mode="aspectFill" />
+    </button>
+    <view class="col" style="margin-left:24rpx; flex:1">
+      <input class="nick" type="nickname" placeholder="点击设置昵称" value="{{ user.nickName }}" bindblur="onNickInput" />
+      <view class="tag-gold tag" style="margin-top:10rpx; align-self:flex-start">{{ isAdmin ? '管理员' : levelName }}</view>
+      <text class="edit-hint">点击头像 / 昵称可修改</text>
+    </view>
+  </view>
+
+  <!-- ===== 管理员模式：只保留管理功能 ===== -->
+  <block wx:if="{{ isAdmin }}">
+    <view class="section-title">管理功能</view>
+    <view class="list">
+      <view class="list-row" bindtap="goAdmin">
+        <text class="title" style="font-size:28rpx; color:var(--primary)">店铺管理</text><text class="mute">›</text>
+      </view>
+      <view class="list-row" bindtap="goStaff">
+        <text class="title" style="font-size:28rpx; color:var(--accent)">店员工作台</text><text class="mute">›</text>
+      </view>
+      <view class="list-row" bindtap="goStaffLogin">
+        <text class="title" style="font-size:28rpx; color:var(--text-sub)">退出员工身份</text><text class="mute">›</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- ===== 普通会员 / 店员模式 ===== -->
+  <block wx:else>
+    <!-- 积分卡 -->
+    <view class="points-card" bindtap="goPoints">
+      <view class="col">
+        <text class="mute" style="color:rgba(255,255,255,0.8)">当前积分</text>
+        <text class="points-num" style="font-size:56rpx">{{ user ? user.points : 0 }}</text>
+      </view>
+      <text class="sub" style="color:rgba(255,255,255,0.9)">积分详情 ›</text>
+    </view>
+
+    <!-- 权益四宫格 -->
+    <view class="section-title">我的权益</view>
+    <view class="grid4">
+      <view class="g4" bindtap="goRedeem"><icon name="voucher" size="76" /><text class="sub">优惠券</text></view>
+      <view class="g4" bindtap="goRedeems"><icon name="record" size="76" /><text class="sub">兑换记录</text></view>
+      <view class="g4" bindtap="goRedeem"><icon name="activity" size="76" /><text class="sub">专属活动</text></view>
+      <view class="g4"><icon name="birthday" size="76" /><text class="sub">生日礼券</text></view>
+    </view>
+
+    <!-- 常用功能 -->
+    <view class="section-title">常用功能</view>
+    <view class="list">
+      <view class="list-row" bindtap="goLog"><text class="title" style="font-size:28rpx">积分明细</text><text class="mute">›</text></view>
+      <view class="list-row" bindtap="goRedeem"><text class="title" style="font-size:28rpx">积分兑换</text><text class="mute">›</text></view>
+      <view class="list-row" bindtap="goRedeems"><text class="title" style="font-size:28rpx">我的兑换</text><text class="mute">›</text></view>
+      <view class="list-row" bindtap="goCode"><text class="title" style="font-size:28rpx">会员码</text><text class="mute">›</text></view>
+      <view wx:if="{{ isStaff }}" class="list-row" bindtap="goStaff">
+        <text class="title" style="font-size:28rpx; color:var(--accent)">店员工作台</text><text class="mute">›</text>
+      </view>
+      <view wx:if="{{ isStaff }}" class="list-row" bindtap="goStaffLogin">
+        <text class="title" style="font-size:28rpx; color:var(--text-sub)">退出员工身份</text><text class="mute">›</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 隐藏入口：连点版本号 7 下进入员工入口（普通用户看不出来） -->
+  <view class="footer" bindtap="onSecretTap">是模玩店！ v1.0.0</view>
+</view>

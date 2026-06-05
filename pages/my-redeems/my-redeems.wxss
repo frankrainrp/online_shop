@@ -1,0 +1,23 @@
+.tabs { display: flex; gap: 16rpx; padding: 24rpx 0; }
+.tab { font-size: 26rpx; color: var(--text-sub); padding: 12rpx 26rpx; border-radius: 999rpx; background: var(--bg-card); }
+.tab.on { background: var(--primary); color: #fff; }
+
+.redeem-row {
+  display: flex; align-items: center;
+  background: var(--bg-card);
+  border: 1rpx solid var(--line);
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+.r-img { width: 120rpx; height: 120rpx; border-radius: 16rpx; background: var(--bg-card-2); }
+.status { font-size: 24rpx; }
+.status-pending { color: var(--accent); }
+.status-done { color: var(--text-mute); }
+.status-canceled { color: var(--text-mute); }
+.code-btn {
+  margin-top: 14rpx;
+  font-size: 24rpx; color: var(--primary);
+  border: 1rpx solid var(--primary);
+  padding: 8rpx 20rpx; border-radius: 999rpx;
+}

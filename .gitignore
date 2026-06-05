@@ -1,0 +1,20 @@
+# 依赖（不入库）
+node_modules/
+tools/**/node_modules/
+cloudfunctions/**/node_modules/
+
+# 设计源文件（体积大，本地保留，不推 GitHub）
+assets/source/
+
+# 微信开发者工具本地私有配置
+project.private.config.json
+
+# 系统
+.DS_Store
+Thumbs.db
+*.log
+
+# 本地密钥（绝不入库）
+tools/.totp_secret
+.totp_secret
+*.secret

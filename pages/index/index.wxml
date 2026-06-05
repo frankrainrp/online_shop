@@ -1,0 +1,74 @@
+<view class="page">
+  <!-- 品牌 Hero -->
+  <view class="hero">
+    <view class="hero-left">
+      <text class="hero-title">是模玩店！</text>
+      <text class="hero-sub">做任务 · 赚积分 · 换好礼</text>
+    </view>
+    <image class="hero-mascot" src="/assets/logos/logo.png" mode="aspectFit" />
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="searchbar">
+    <view class="search-box" bindtap="goSearch">
+      <view class="search-ico"></view>
+      <text class="search-ph">搜索手办 / 周边 / 优惠券</text>
+    </view>
+  </view>
+
+  <!-- 轮播 Banner -->
+  <view class="wrap">
+    <swiper wx:if="{{ banners.length }}" class="swiper" indicator-dots indicator-active-color="#e5332a"
+            indicator-color="rgba(255,255,255,0.6)" autoplay circular interval="4000">
+      <swiper-item wx:for="{{ banners }}" wx:key="_id" data-link="{{ item.link }}" bindtap="onBanner">
+        <image class="swiper-img" src="{{ item.image }}" mode="aspectFill" />
+        <view wx:if="{{ item.title }}" class="swiper-title">{{ item.title }}</view>
+      </swiper-item>
+    </swiper>
+    <view wx:else class="swiper swiper-ph">
+      <view class="ph-tag">活动 / 新品</view>
+      <text class="ph-text">轮播图位 · 去 banners 集合添加</text>
+    </view>
+  </view>
+
+  <!-- 图标导航 -->
+  <view class="wrap">
+    <view class="nav">
+      <view class="nav-item" bindtap="goRedeems">
+        <icon name="coupon" size="66" />
+        <text class="nav-label">我的兑换</text>
+      </view>
+      <view class="nav-item" bindtap="signIn">
+        <icon name="sign" size="66" />
+        <text class="nav-label">签到</text>
+      </view>
+      <view class="nav-item" bindtap="goUpdates">
+        <icon name="activity" size="66" />
+        <text class="nav-label">上新</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品流 -->
+  <view class="wrap">
+    <view class="feed-title">
+      <view class="feed-bar"></view>
+      <text>好物推荐</text>
+    </view>
+    <view wx:if="{{ goods.length }}" class="feed">
+      <view wx:for="{{ goods }}" wx:key="_id" class="g-card" data-id="{{ item._id }}" bindtap="onGoods">
+        <image class="g-img" src="{{ item.image || '/assets/placeholder/goods.png' }}" mode="aspectFill" />
+        <view class="g-body">
+          <text class="g-name">{{ item.name }}</text>
+          <view class="g-bottom">
+            <view class="g-price"><text class="g-price-num">{{ item.cost }}</text><text class="g-price-unit">积分</text></view>
+            <view class="g-cat">{{ item.category }}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:elif="{{ !loading }}" class="empty">暂无商品，去 goods 集合添加（status:"on"）</view>
+  </view>
+
+  <view wx:if="{{ goods.length }}" class="feed-end">没有更多了</view>
+</view>

@@ -1,0 +1,43 @@
+<view class="page">
+  <!-- 搜索栏 -->
+  <view class="sbar">
+    <view class="sbox">
+      <view class="s-ico"></view>
+      <input class="s-input" value="{{ keyword }}" focus placeholder="搜索手办 / 周边 / 优惠券"
+             placeholder-class="s-ph" confirm-type="search" bindinput="onInput" bindconfirm="doSearch" />
+      <view wx:if="{{ keyword }}" class="s-clear" bindtap="clear">×</view>
+    </view>
+    <text class="s-btn" bindtap="doSearch">搜索</text>
+  </view>
+
+  <!-- 类别 filter -->
+  <scroll-view scroll-x class="cat-bar" enable-flex>
+    <view wx:for="{{ cats }}" wx:key="*this"
+          class="cchip {{ cat === item ? 'on' : '' }}" data-c="{{ item }}" bindtap="setCat">{{ item }}</view>
+  </scroll-view>
+
+  <!-- 积分 filter（排序） -->
+  <view class="sort-bar">
+    <text class="sort-label">积分</text>
+    <view class="sopt {{ sort === 'default' ? 'on' : '' }}" data-s="default" bindtap="setSort">默认</view>
+    <view class="sopt {{ sort === 'asc' ? 'on' : '' }}" data-s="asc" bindtap="setSort">低 → 高</view>
+    <view class="sopt {{ sort === 'desc' ? 'on' : '' }}" data-s="desc" bindtap="setSort">高 → 低</view>
+  </view>
+
+  <!-- 结果 -->
+  <view class="wrap">
+    <view wx:if="{{ results.length }}" class="feed">
+      <view wx:for="{{ results }}" wx:key="_id" class="g-card" data-id="{{ item._id }}" bindtap="goDetail">
+        <image class="g-img" src="{{ item.image || '/assets/placeholder/goods.png' }}" mode="aspectFill" />
+        <view class="g-body">
+          <text class="g-name">{{ item.name }}</text>
+          <view class="g-bottom">
+            <view class="g-price"><text class="g-price-num">{{ item.cost }}</text><text class="g-price-unit">积分</text></view>
+            <view class="g-cat">{{ item.category }}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:elif="{{ !loading }}" class="empty">没有符合条件的商品</view>
+  </view>
+</view>

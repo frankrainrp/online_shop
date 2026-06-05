@@ -1,0 +1,24 @@
+<view class="page wrap">
+  <image class="brand-mascot" src="/assets/logos/logo.png" mode="aspectFit" />
+  <view class="login-card">
+    <!-- 已是员工：显示身份 + 退出 -->
+    <block wx:if="{{ isStaff }}">
+      <text class="login-title">当前身份：{{ roleText }}</text>
+      <text class="login-sub">你已通过认证。如需验证 OTP 流程，可先退出再用动态码重新认证。</text>
+      <view class="btn login-btn ghost" bindtap="onResign">退出员工身份</view>
+    </block>
+
+    <!-- 未认证：输入动态码 -->
+    <block wx:else>
+      <text class="login-title">员工入口</text>
+      <text class="login-sub">输入身份验证器里的 6 位动态码</text>
+
+      <input class="login-ipt" type="number" maxlength="6" value="{{ code }}" bindinput="onInput"
+             placeholder="6 位动态码" placeholder-class="ph" confirm-type="done" bindconfirm="onSubmit" />
+
+      <view class="btn login-btn {{ submitting?'disabled':'' }}" bindtap="onSubmit">确认</view>
+
+      <text class="login-tip">动态码每 30 秒刷新一次，来自你的身份验证器 App（Google / 腾讯 / 微软 Authenticator）。密钥由店主在 claimAdmin 云函数里设置，请勿外泄。</text>
+    </block>
+  </view>
+</view>

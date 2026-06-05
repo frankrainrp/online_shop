@@ -1,0 +1,85 @@
+/* app.wxss —— 全局主题（暗黑科技风：黑底 + 红高亮 + 白字，参照 sample_effect）
+   所有颜色抽成变量，换肤只改这里。界面内禁止 emoji，图标走素材图。 */
+page {
+  --bg: #151515;               /* 页面底（近黑） */
+  --bg-elevated: #1e1e1e;      /* 略抬升背景 */
+  --bg-card: #222224;          /* 卡片（深灰） */
+  --bg-card-2: #2c2c2e;        /* 输入框/次容器 */
+  --primary: #e5332a;          /* 品牌红（主色） */
+  --primary-2: #ff5a3c;        /* 浅红/橙红 */
+  --accent: #ffffff;           /* 白（第二强调） */
+  --coin: #ff4d42;             /* 积分数值（亮红） */
+  --ink: #ffffff;             /* 白（原墨黑位，暗色下翻白） */
+  --text: #f2f2f2;            /* 主文字（白） */
+  --text-sub: #a8a8a8;         /* 次文字（浅灰） */
+  --text-mute: #6f6f6f;        /* 辅助文字（暗灰） */
+  --line: rgba(255,255,255,0.07); /* 分割线（暗底浅线） */
+  --grad-points: linear-gradient(135deg, #e5332a 0%, #b51d16 100%);
+  --grad-card: linear-gradient(135deg, #2a2a2c 0%, #1a1a1c 100%);
+  --shadow: 0 6rpx 24rpx rgba(0,0,0,0.45);
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+}
+
+view, text { box-sizing: border-box; }
+
+/* ---- 通用工具类 ---- */
+.page { min-height: 100vh; background: var(--bg); padding-bottom: 40rpx; }
+.wrap { padding: 0 24rpx; }
+
+.card {
+  background: var(--bg-card);
+  border-radius: 20rpx;
+  padding: 28rpx;
+  border: 1rpx solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.row { display: flex; align-items: center; }
+.between { justify-content: space-between; }
+.center { justify-content: center; }
+.col { display: flex; flex-direction: column; }
+
+.title { font-size: 32rpx; font-weight: 600; color: var(--text); }
+.sub { font-size: 24rpx; color: var(--text-sub); }
+.mute { font-size: 22rpx; color: var(--text-mute); }
+
+.btn {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 22rpx 0;
+  text-align: center;
+  border: none;
+}
+.btn::after { border: none; }
+.btn-ghost { background: var(--bg-card-2); color: var(--text-sub); }
+
+.points-num {
+  font-size: 72rpx;
+  font-weight: 700;
+  color: var(--coin);
+  font-family: "DIN Alternate", -apple-system, sans-serif;
+}
+
+.tag {
+  display: inline-block;
+  align-self: flex-start;   /* 防止在 flex 列里被拉伸成整条 */
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+  background: rgba(229,51,42,0.18);
+  color: #ff6a5e;
+}
+.tag-cyan { background: rgba(255,255,255,0.08); color: #d6d6d6; }
+.tag-gold { background: rgba(229,51,42,0.18); color: #ff6a5e; }
+
+.divider { height: 1rpx; background: var(--line); margin: 24rpx 0; }
+
+.empty { text-align: center; color: var(--text-mute); padding: 120rpx 0; font-size: 26rpx; }
+
+.section-title { font-size: 30rpx; font-weight: 600; margin: 32rpx 0 20rpx; color: var(--text); }

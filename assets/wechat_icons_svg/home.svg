@@ -1,0 +1,51 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="redGrad" x1="22" y1="14" x2="98" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF3B35"/>
+      <stop offset="1" stop-color="#B91518"/>
+    </linearGradient>
+
+    <linearGradient id="darkGrad" x1="30" y1="18" x2="92" y2="106" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2A2A2E"/>
+      <stop offset="1" stop-color="#151517"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- dark rounded background -->
+  <rect x="10" y="10" width="100" height="100" rx="26" fill="url(#darkGrad)" filter="url(#shadow)"/>
+
+  <!-- red glow circle -->
+  <circle cx="60" cy="54" r="34" fill="#FF2D2D" opacity="0.14"/>
+
+  <!-- main red icon circle -->
+  <circle cx="60" cy="54" r="29" fill="url(#redGrad)"/>
+
+  <!-- home roof -->
+  <path d="M37 55L58.5 37.5C59.4 36.8 60.6 36.8 61.5 37.5L83 55"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="7"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- home body -->
+  <path d="M43 54V72C43 75.3 45.7 78 49 78H71C74.3 78 77 75.3 77 72V54"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="7"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- door -->
+  <path d="M55 78V65C55 62.8 56.8 61 59 61H61C63.2 61 65 62.8 65 65V78"
+        fill="#3B1617"
+        opacity="0.92"/>
+
+  <!-- small highlight -->
+  <circle cx="48" cy="43" r="3.2" fill="#FFFFFF" opacity="0.75"/>
+
+</svg>

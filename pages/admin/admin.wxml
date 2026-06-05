@@ -1,0 +1,82 @@
+<view class="page">
+  <!-- 非管理员拦截 -->
+  <view wx:if="{{ checked && !isAdmin }}" class="empty">
+    <view>无权限</view>
+    <view style="margin-top:12rpx">此页面仅管理员可用</view>
+    <view style="margin-top:12rpx">需在 staff 集合里把你的 role 设为 admin</view>
+  </view>
+
+  <view wx:if="{{ isAdmin }}">
+    <!-- tab 切换 -->
+    <view class="adm-tabs">
+      <view wx:for="{{ tabs }}" wx:key="key"
+            class="adm-tab {{ tab===item.key?'on':'' }}" data-tab="{{ item.key }}" bindtap="switchTab">{{ item.name }}</view>
+    </view>
+
+    <!-- 列表 -->
+    <view class="wrap">
+      <view wx:for="{{ list }}" wx:key="_id" class="adm-row">
+        <image wx:if="{{ item._img }}" class="adm-thumb" src="{{ item._img }}" mode="aspectFill" />
+        <view wx:else class="adm-thumb adm-thumb-ph"></view>
+        <view class="col" style="flex:1; margin-left:20rpx; min-width:0">
+          <text class="adm-title ellipsis">{{ item._title }}</text>
+          <text class="mute" style="margin-top:6rpx">{{ item._sub }}</text>
+        </view>
+        <view class="adm-ops">
+          <view wx:if="{{ tab !== 'staff' }}" class="op-btn" data-item="{{ item }}" bindtap="onEdit">编辑</view>
+          <view class="op-btn del" data-id="{{ item._id }}" bindtap="onRemove">删除</view>
+        </view>
+      </view>
+      <view wx:if="{{ !list.length }}" class="empty">还没有内容，点右下角 + 新增</view>
+    </view>
+
+    <!-- 新增浮动按钮 -->
+    <view class="fab" bindtap="onAdd">+</view>
+
+    <!-- 编辑表单浮层 -->
+    <view wx:if="{{ showForm }}" class="mask" bindtap="closeForm">
+      <view class="sheet" catchtap="noop">
+        <view class="sheet-head">
+          <text class="title">{{ form._id ? '编辑' : '新增' }}</text>
+          <text class="sheet-close" bindtap="closeForm">关闭</text>
+        </view>
+
+        <scroll-view scroll-y class="sheet-body">
+          <view wx:for="{{ formFields }}" wx:key="key" class="field">
+            <text class="field-label">{{ item.label }}</text>
+
+            <!-- 文本 -->
+            <input wx:if="{{ item.type==='text' }}" class="field-ipt" value="{{ form[item.key] }}"
+                   data-key="{{ item.key }}" bindinput="onInput" placeholder="请输入" />
+
+            <!-- 数字 -->
+            <input wx:elif="{{ item.type==='number' }}" class="field-ipt" type="number" value="{{ form[item.key] }}"
+                   data-key="{{ item.key }}" bindinput="onInput" placeholder="0" />
+
+            <!-- 多行 -->
+            <textarea wx:elif="{{ item.type==='textarea' }}" class="field-area" value="{{ form[item.key] }}"
+                      data-key="{{ item.key }}" bindinput="onInput" placeholder="请输入" />
+
+            <!-- 选择 -->
+            <picker wx:elif="{{ item.type==='picker' }}" range="{{ item.options }}"
+                    data-key="{{ item.key }}" bindchange="onPicker">
+              <view class="field-ipt picker-val">{{ form[item.key] || '请选择' }}</view>
+            </picker>
+
+            <!-- 开关 -->
+            <switch wx:elif="{{ item.type==='switch' }}" checked="{{ form[item.key]==='on' }}"
+                    color="#e5332a" data-key="{{ item.key }}" bindchange="onSwitch" />
+
+            <!-- 图片 -->
+            <view wx:elif="{{ item.type==='image' }}" class="field-img" data-key="{{ item.key }}" bindtap="onChooseImage">
+              <image wx:if="{{ form[item.key] }}" class="field-img-pic" src="{{ form[item.key] }}" mode="aspectFill" />
+              <view wx:else class="field-img-ph">点击上传</view>
+            </view>
+          </view>
+        </scroll-view>
+
+        <view class="btn sheet-save {{ saving?'disabled':'' }}" bindtap="onSave">保存</view>
+      </view>
+    </view>
+  </view>
+</view>

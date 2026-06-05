@@ -1,0 +1,25 @@
+<view class="page wrap">
+  <view class="code-card">
+    <!-- 头部会员信息 -->
+    <view class="row" style="width:100%">
+      <image class="avatar" src="{{ user.avatarUrl }}" mode="aspectFill" />
+      <view class="col" style="margin-left:20rpx">
+        <text class="title">{{ user ? user.nickName : '会员' }}</text>
+        <view class="tag-gold tag" style="margin-top:8rpx">{{ levelName }}</view>
+      </view>
+    </view>
+
+    <!-- 二维码区（MVP 用会员号；接 weapp-qrcode 后画真二维码） -->
+    <view class="qr-box">
+      <canvas canvas-id="qrcanvas" class="qr-canvas"></canvas>
+      <view class="qr-placeholder">
+        <text class="mute">会员号</text>
+        <text class="member-no" bindtap="copyNo">{{ memberNo }}</text>
+        <text class="mute" style="margin-top:8rpx">点击复制 · 出示给店员加分/核销</text>
+      </view>
+    </view>
+
+    <text class="sub" style="margin-top:24rpx">向店员出示此会员号即可积分或兑换</text>
+    <view class="refresh" bindtap="refresh">⟳ 刷新</view>
+  </view>
+</view>

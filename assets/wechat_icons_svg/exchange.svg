@@ -1,0 +1,36 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="96" height="96" rx="24" fill="#252628"/>
+
+  <circle cx="31" cy="43" r="17" fill="#ED2924"/>
+  <circle cx="31" cy="43" r="12" fill="#B51F1B"/>
+  <text
+    x="31"
+    y="49"
+    text-anchor="middle"
+    font-size="16"
+    font-weight="800"
+    fill="#FFFFFF"
+    font-family="Arial, sans-serif"
+  >积</text>
+
+  <path
+    d="M50 36H67"
+    stroke="#ED2924"
+    stroke-width="5"
+    stroke-linecap="round"
+  />
+  <path
+    d="M61 29L70 36L61 43"
+    stroke="#ED2924"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <rect x="47" y="53" width="31" height="22" rx="5" fill="#ED2924"/>
+  <rect x="60" y="53" width="6" height="22" fill="#B51F1B"/>
+  <rect x="44" y="46" width="37" height="10" rx="4" fill="#FF3B35"/>
+  <rect x="60" y="46" width="6" height="10" fill="#B51F1B"/>
+
+
+</svg>

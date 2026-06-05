@@ -1,0 +1,62 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="12" y1="8" x2="116" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B2B2F"/>
+      <stop offset="1" stop-color="#171719"/>
+    </linearGradient>
+
+    <linearGradient id="red" x1="24" y1="18" x2="104" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF3A32"/>
+      <stop offset="1" stop-color="#C91515"/>
+    </linearGradient>
+
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="1 0 0 0 0.95
+                0 0 0 0 0.05
+                0 0 0 0 0.05
+                0 0 0 .45 0"/>
+      <feBlend in="SourceGraphic"/>
+    </filter>
+  </defs>
+
+  <!-- outer card -->
+  <rect x="10" y="10" width="108" height="108" rx="26" fill="url(#bg)"/>
+  <rect x="10.75" y="10.75" width="106.5" height="106.5" rx="25.25" stroke="#3A3A3E" stroke-width="1.5"/>
+
+  <!-- red badge background -->
+  <rect x="24" y="24" width="80" height="80" rx="20" fill="url(#red)" filter="url(#glow)"/>
+
+  <!-- member-code symbol -->
+  <g fill="#FFFFFF">
+    <!-- QR-like corner blocks -->
+    <rect x="38" y="38" width="16" height="16" rx="4"/>
+    <rect x="74" y="38" width="16" height="16" rx="4"/>
+    <rect x="38" y="74" width="16" height="16" rx="4"/>
+
+    <!-- inner dark cuts -->
+    <rect x="43" y="43" width="6" height="6" rx="2" fill="#E92924"/>
+    <rect x="79" y="43" width="6" height="6" rx="2" fill="#E92924"/>
+    <rect x="43" y="79" width="6" height="6" rx="2" fill="#E92924"/>
+
+    <!-- code pixels -->
+    <rect x="60" y="39" width="7" height="7" rx="2"/>
+    <rect x="60" y="51" width="7" height="7" rx="2"/>
+    <rect x="72" y="62" width="7" height="7" rx="2"/>
+    <rect x="84" y="62" width="7" height="7" rx="2"/>
+    <rect x="61" y="74" width="7" height="7" rx="2"/>
+    <rect x="73" y="83" width="7" height="7" rx="2"/>
+    <rect x="85" y="82" width="7" height="7" rx="2"/>
+  </g>
+
+  <!-- bottom member strip -->
+  <rect x="34" y="97" width="60" height="10" rx="5" fill="#202024"/>
+  <circle cx="45" cy="102" r="3" fill="#FF302A"/>
+  <rect x="53" y="99.5" width="30" height="5" rx="2.5" fill="#7A7A82"/>
+
+  <!-- subtle top highlight -->
+  <path d="M37 28H74C87 28 99 40 99 53" stroke="#FF6A64" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+</svg>

@@ -1,0 +1,40 @@
+<view class="page">
+  <!-- 顶部我的积分条 -->
+  <view class="wrap">
+    <view class="mypoints">
+      <view class="col">
+        <text class="mute" style="color:rgba(255,255,255,0.8)">我的积分</text>
+        <text class="points-num small">{{ user ? user.points : 0 }}</text>
+      </view>
+      <view class="btn-ghost records-btn" bindtap="goRecords">兑换记录</view>
+    </view>
+  </view>
+
+  <!-- 分类 -->
+  <view class="wrap">
+    <view class="cats">
+      <view wx:for="{{ cats }}" wx:key="*this"
+            class="cat {{ cat===item?'on':'' }}" data-c="{{ item }}" bindtap="setCat">{{ item }}</view>
+    </view>
+  </view>
+
+  <!-- 商品网格 -->
+  <view class="wrap">
+    <view wx:if="{{ goods.length }}" class="goods-grid">
+      <view wx:for="{{ goods }}" wx:key="_id"
+            wx:if="{{ cat==='全部' || item.category===cat }}" class="goods-card">
+        <image class="goods-img" src="{{ item.image }}" mode="aspectFill" data-id="{{ item._id }}" bindtap="goDetail" />
+        <text class="goods-name ellipsis" data-id="{{ item._id }}" bindtap="goDetail">{{ item.name }}</text>
+        <view class="row between" style="margin-top:8rpx">
+          <text class="tag-gold tag">{{ item.cost }} 积分</text>
+          <text class="mute">库存 {{ item.stock }}</text>
+        </view>
+        <view class="redeem-btn {{ (user && user.points>=item.cost && item.stock>0) ? '' : 'disabled' }}"
+              data-item="{{ item }}" bindtap="onRedeem">
+          {{ item.stock<=0 ? '已兑完' : '立即兑换' }}
+        </view>
+      </view>
+    </view>
+    <view wx:elif="{{ !loading }}" class="empty">暂无可兑换商品，去 goods 集合添加（status:"on"）</view>
+  </view>
+</view>

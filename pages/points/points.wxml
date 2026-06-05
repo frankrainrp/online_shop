@@ -1,0 +1,50 @@
+<view class="page wrap">
+  <!-- 大积分卡 -->
+  <view class="big-card">
+    <view class="row between">
+      <text class="mute" style="color:rgba(255,255,255,0.8)">当前可用积分</text>
+      <text class="mute" style="color:rgba(255,255,255,0.8)" bindtap="goLog">明细 ›</text>
+    </view>
+    <text class="points-num" style="margin:20rpx 0">{{ user ? user.points : 0 }}</text>
+    <view class="row between">
+      <text class="sub" style="color:rgba(255,255,255,0.7)">积分越多兑换越多</text>
+      <text class="sub" style="color:rgba(255,255,255,0.7)" bindtap="goLog">积分明细 ›</text>
+    </view>
+  </view>
+
+  <!-- 成长值 / 等级 -->
+  <view class="card" style="margin-top:24rpx">
+    <view class="row between">
+      <view class="col">
+        <text class="title">{{ user ? user.growth : 0 }}</text>
+        <text class="mute">成长值</text>
+      </view>
+      <view class="tag-gold tag">{{ levelName }}</view>
+    </view>
+    <view wx:if="{{ next }}" class="progress-wrap">
+      <view class="progress-bar"><view class="progress-fill" style="width:{{ user && next ? (user.growth / next.min * 100) : 0 }}%"></view></view>
+      <text class="mute" style="margin-top:12rpx">再赚 {{ needGrowth }} 成长值升级 {{ next.name }}</text>
+    </view>
+    <text wx:else class="mute" style="margin-top:16rpx">已是最高等级</text>
+  </view>
+
+  <!-- 攒分 / 用分 -->
+  <view class="row" style="gap:20rpx; margin-top:24rpx">
+    <view class="action-card" bindtap="goCode" style="background:linear-gradient(135deg,#e5332a,#ff5a3c)">
+      <text class="title">攒积分</text>
+      <text class="sub" style="color:rgba(255,255,255,0.8)">出示会员码消费攒分</text>
+    </view>
+    <view class="action-card" bindtap="goRedeem" style="background:linear-gradient(135deg,#2b2b2b,#1a1a1a)">
+      <text class="title">用积分</text>
+      <text class="sub" style="color:rgba(255,255,255,0.8)">兑换好礼/优惠券</text>
+    </view>
+  </view>
+
+  <!-- 积分小贴士 -->
+  <view class="card" style="margin-top:24rpx">
+    <text class="section-title" style="margin:0 0 16rpx">积分小贴士</text>
+    <text class="sub" style="display:block;margin:8rpx 0">· 积分在订单完成后自动到账</text>
+    <text class="sub" style="display:block;margin:8rpx 0">· 积分有效期为 12 个月，过期前会提醒</text>
+    <text class="sub" style="display:block;margin:8rpx 0">· 更多规则请查看《积分规则》</text>
+  </view>
+</view>
