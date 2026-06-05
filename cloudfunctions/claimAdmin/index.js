@@ -107,6 +107,11 @@ exports.main = async (event) => {
     return { ok: false, msg: '请先在「员工入口」启用你的动态码', needEnroll: true };
   }
 
+  // 安全：未配置主口令环境变量时，占位符是公开已知的，禁止用它引导管理员（防被冒名提权）
+  if (!mine && MASTER_SECRET === 'SET_TOTP_SECRET_IN_CLOUD_ENV') {
+    return { ok: false, msg: '系统未配置主口令，请联系店主在云函数环境变量设置 TOTP_SECRET' };
+  }
+
   const usingSecret = mine ? mine.totpSecret : MASTER_SECRET;
 
   const step = matchStep(usingSecret, code);

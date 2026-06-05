@@ -133,3 +133,25 @@
 - 店员/管理员属半可信角色：被盗号后可在其权限内造成损失（加分上限 10 万/次已限）。建议大额操作留审计、定期核对。
 - nickName 可设成"客服/管理员"等做社工，仅展示无权限影响。
 - 云端测试无 OPENID 时调用 claimAdmin 会落到 openid=undefined 的 staff 记录（不影响真实用户，建议别这么用）。
+
+---
+
+## 第四轮审查（2026-06-05｜认证/会话/审计/抵现/裂变/看板）
+
+**修复（本轮）**
+- 🔴 **claimAdmin 占位主口令提权**：未配 `TOTP_SECRET` env 时占位符公开已知，他人可在无 staff 记录时算码引导成 admin。已加防线：占位符未替换则拒绝主口令引导。
+- ✅ **staffList 密钥泄露**（上轮已修，复核）：admin staffList 脱敏，不回 totpSecret，仅 hasSecret/sessionValid。
+- ✅ **login 脱敏**：staffInfo/staffState 不含 totpSecret。
+
+**复核通过**
+- 会话：addPoints/verifyRedeem/getMember/admin/getAudit/getDashboard 均校验 `sessionExpireAt > now`，过期 expired。
+- 认证：一人一密钥；sec_lock 失败锁定 + sec_otp 一次性消费(按 openid+code+step)；TOTP 经 RFC6238 向量。
+- 原子性：加/扣分、抵现、核销、兑换、**邀请奖励**(inviteRewarded false→true 占用)均原子，防并发重复。
+- 裂变防刷：仅首注册绑定 invitedBy + 校验邀请人存在且非自邀 + 每人只返一次 + **须真实消费(type=消费)才发**；固定 1500 不经 delta 通道，安全。
+- 数据最小化：getMember 仅必要字段；getDashboard 仅聚合数字；getAudit 仅 admin。
+
+**部署强依赖（不配=漏洞）**
+- **必须配 `TOTP_SECRET` 环境变量**（否则主口令引导被禁用，无法开通首个店长——这是正确行为，但要记得配）。
+- **`audit_log` 安全规则**：所有用户不可读写（仅云端），客户端只经 getAudit 读。
+- 云存储权限「所有用户可读，仅创建者可读写」→ 任意登录用户可上传文件，有被刷存储风险；彻底收紧需改走云函数上传（列后续）。
+- sec_otp/sec_lock/audit_log 随用量增长，建议定时清理 + 索引。
