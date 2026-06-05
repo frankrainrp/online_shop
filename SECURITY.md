@@ -36,11 +36,12 @@
 
 ---
 
-## 三、部署全部云函数（15 个）
+## 三、部署全部云函数（16 个）
 ```
 init  login  signIn  addPoints  redeemGoods  verifyRedeem  updateProfile  getMember
-admin  claimAdmin  resignStaff  staffSecret  getAudit  getDashboard  bindPhone
+admin  claimAdmin  resignStaff  staffSecret  getAudit  getDashboard  bindPhone  getPointsLog
 ```
+> `getPointsLog` 读本人积分流水（云端身份，不依赖客户端规则）；`staffSecret` 已停用为 tombstone。
 > ⚠️ `bindPhone` 用微信手机号能力，需小程序**已认证**并开通；存储手机号到 users（PII）。
 > **隐私保护指引必须勾选「手机号」**，否则审核被拒、且违规收集 PII。users 集合已 `read:false` 锁死。
 

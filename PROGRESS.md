@@ -114,6 +114,7 @@
   · 前端：staff-login 页重构为 4 态(已登录/需启用/登录/主口令引导)+otpauth 二维码扫码启用+手动密钥+会话到期显示+重置入口；staff 页无权限文案更新指向员工入口重登
   · 说明：无短信无费用，靠验证器 App；店长吊销店员可用 admin staffResetSecret 或直接移除
 - 2026-06-05 **安全第五轮(红队复查)**：修 init.makeMeStaff 无密钥提权后门(默认停用,需 ALLOW_BOOTSTRAP=on)；重写 SECURITY.md(5层信任分区+11集合权限矩阵+部署强依赖)；**P2 店员加分日限额**(非管理员每日>5万分拒绝)+**大额告警**(单次≥5000分 audit 标 big,summary 标⚠,加 amount 字段供聚合)
+- 2026-06-05 **修三处反馈问题**：①上新动态卡片不可点→加 bindtap+详情弹层(完整图文/类型/日期, scroll-view)②积分明细"获取记录看不了"→根因 points_log 客户端直读依赖安全规则(没配则空)+wxml 过滤后空白；改：新增 getPointsLog 云函数(云端身份读本人,不依赖规则)、points-log 改 JS 过滤+分类空状态文案③员工入口两处过时文案(还写"自助启用密钥")→改为"联系店长生成码"，与"店长发配"一致
 - 2026-06-05 **新客手机号一键登录**：新增 bindPhone 云函数(getPhoneNumber code→cloud.openapi 换手机号→存 users.phone,脱敏回传)；新增 pages/login(品牌+微信手机号一键登录按钮+隐私说明+店员入口);首页 onShow 拦截(已登录无 phone 且非店员→跳登录页,店员/在册员工豁免)。店长登录维持纯 TOTP+7天会话(满足"每周重登",无需改)。**依赖：小程序已认证+开通手机号能力+隐私指引勾选手机号**；users 加 phone(PII)已 read:false 锁死
 - 2026-06-05 **店长后台发放动态码 + 修脱敏漏洞**：admin staffList 原样返回 staff 全量(含 totpSecret)→脱敏，只回 hasSecret/sessionValid；staffResetSecret 升级为 staffGenSecret(生成新密钥并返回 otpauth)；admin 页店员行加「生成码/重置码」按钮→弹二维码(canvas 画 otpauth)+手动密钥，店长当场给店员扫；店员行展示「已启用/已登录/未启用动态码」状态。主口令密钥已生成写入 tools/.totp_secret(已 gitignore)
 - 2026-06-05 **消费积分 & 积分抵现（核心商业逻辑）**：config 加 POINT_TO_YUAN=100；addPoints 白名单加 '抵现'；店员工作台重构为 5 段（查会员/②按消费额加分 1元=1分/③积分抵现 100分=1元/④手动加扣/⑤核销），消费与抵现均输入金额自动换算分值+实时预览，抵现前端校验余额+确认弹窗、后端 addPoints 负向原子扣分防扣负、type='抵现' 入流水；积分明细按 delta 正负归类（抵现落「消费」筛选），无中文 class 问题

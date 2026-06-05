@@ -5,7 +5,8 @@ Page({
     tab: '全部',   // 全部/新品到货/活动预告/店铺公告
     tabs: ['全部', '新品到货', '活动预告', '店铺公告'],
     list: [],
-    loading: true
+    loading: true,
+    detail: null   // 点击查看的动态详情
   },
 
   onShow() { this.load(); },
@@ -19,5 +20,10 @@ Page({
     this.setData({ list, loading: false });
   },
 
-  setTab(e) { this.setData({ tab: e.currentTarget.dataset.t }); }
+  setTab(e) { this.setData({ tab: e.currentTarget.dataset.t }); },
+
+  // 点击动态卡片 → 弹层看完整详情
+  openDetail(e) { this.setData({ detail: e.currentTarget.dataset.item }); },
+  closeDetail() { this.setData({ detail: null }); },
+  noop() {}
 });

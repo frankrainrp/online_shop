@@ -6,17 +6,37 @@
 
   <view wx:if="{{ list.length }}">
     <view wx:for="{{ list }}" wx:key="_id"
-          wx:if="{{ tab==='全部' || item.type===tab }}" class="update-card">
+          wx:if="{{ tab==='全部' || item.type===tab }}" class="update-card"
+          data-item="{{ item }}" bindtap="openDetail">
       <image class="u-img" src="{{ item.image }}" mode="aspectFill" />
-      <view class="col" style="flex:1; margin-left:20rpx">
+      <view class="col" style="flex:1; margin-left:20rpx; min-width:0">
         <view class="row" style="gap:12rpx">
           <text class="tag-cyan tag">{{ item.type }}</text>
           <text class="title ellipsis" style="font-size:28rpx; flex:1">{{ item.title }}</text>
         </view>
         <text class="sub ellipsis2" style="margin-top:10rpx">{{ item.desc }}</text>
-        <text class="mute" style="margin-top:10rpx">{{ item.dateStr }}</text>
+        <view class="row between" style="margin-top:10rpx">
+          <text class="mute">{{ item.dateStr }}</text>
+          <text class="mute" style="color:var(--primary)">查看详情 ›</text>
+        </view>
       </view>
     </view>
   </view>
   <view wx:elif="{{ !loading }}" class="empty">暂无动态，去 updates 集合发布商品更新/活动/公告</view>
+
+  <!-- 详情弹层 -->
+  <view wx:if="{{ detail }}" class="mask" bindtap="closeDetail">
+    <view class="detail-card" catchtap="noop">
+      <scroll-view scroll-y class="detail-body">
+        <image wx:if="{{ detail.image }}" class="detail-img" src="{{ detail.image }}" mode="widthFix" />
+        <view class="row" style="gap:12rpx; margin-top:20rpx">
+          <text class="tag-cyan tag">{{ detail.type }}</text>
+          <text class="mute">{{ detail.dateStr }}</text>
+        </view>
+        <text class="detail-title">{{ detail.title }}</text>
+        <text class="detail-desc">{{ detail.desc }}</text>
+      </scroll-view>
+      <view class="btn detail-close" bindtap="closeDetail">关闭</view>
+    </view>
+  </view>
 </view>

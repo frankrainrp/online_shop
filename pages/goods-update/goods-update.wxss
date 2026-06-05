@@ -13,3 +13,17 @@
 .u-img { width: 160rpx; height: 160rpx; border-radius: 16rpx; background: var(--bg-card-2); flex-shrink: 0; }
 .ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ellipsis2 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.row.between { display: flex; justify-content: space-between; align-items: center; }
+
+/* 动态详情弹层 */
+.mask { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 48rpx; box-sizing: border-box; }
+.detail-card {
+  width: 100%; max-height: 80vh; box-sizing: border-box;
+  background: var(--bg); border-radius: 24rpx; padding: 32rpx;
+  display: flex; flex-direction: column;
+}
+.detail-body { flex: 1; min-height: 0; }
+.detail-img { width: 100%; border-radius: 16rpx; background: var(--bg-card-2); }
+.detail-title { display: block; font-size: 34rpx; font-weight: 700; color: var(--text); margin-top: 20rpx; }
+.detail-desc { display: block; font-size: 28rpx; color: var(--text-sub); line-height: 1.7; margin-top: 16rpx; white-space: pre-wrap; }
+.detail-close { margin-top: 24rpx; flex-shrink: 0; }

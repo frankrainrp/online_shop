@@ -5,10 +5,8 @@
     <view class="tab {{ filter==='消费'?'on':'' }}" data-f="消费" bindtap="setFilter">消费</view>
   </view>
 
-  <view wx:if="{{ list.length }}">
-    <view wx:for="{{ list }}" wx:key="_id"
-          wx:if="{{ filter==='全部' || (filter==='获取'&&item.delta>0) || (filter==='消费'&&item.delta<0) }}"
-          class="log-item">
+  <view wx:if="{{ shown.length }}">
+    <view wx:for="{{ shown }}" wx:key="_id" class="log-item">
       <view class="col">
         <text class="title" style="font-size:28rpx">{{ item.type }}{{ item.remark ? ' · '+item.remark : '' }}</text>
         <text class="mute" style="margin-top:6rpx">{{ item.dateStr }} · 单号 {{ item.orderNo }}</text>
@@ -16,5 +14,5 @@
       <text class="delta {{ item.delta>0?'plus':'minus' }}">{{ item.sign }}{{ item.delta }}</text>
     </view>
   </view>
-  <view wx:elif="{{ !loading }}" class="empty">还没有积分记录哦 ~</view>
+  <view wx:elif="{{ !loading }}" class="empty">{{ filter==='全部' ? '还没有积分记录哦 ~' : '该分类暂无记录' }}</view>
 </view>

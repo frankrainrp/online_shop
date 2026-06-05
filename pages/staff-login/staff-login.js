@@ -77,7 +77,7 @@ Page({
         await this.onShow();
       } else if (r.needEnroll) {
         await this.onShow(); // 切到 needEnroll
-        wx.showModal({ title: '请先启用', content: '你已被加为店员，请先点「启用我的动态码」生成密钥。', showCancel: false });
+        wx.showModal({ title: '请等店长发码', content: '你已被加为店员，但还没有动态码。请联系店长在「店铺管理 → 店员」点你名字旁的「生成码」，扫码后再回来登录。', showCancel: false });
       } else {
         const extra = r.serverTime ? `\n服务器时间：${r.serverTime}` : '';
         wx.showModal({ title: '验证失败', content: (r.msg || '验证失败') + extra, showCancel: false });

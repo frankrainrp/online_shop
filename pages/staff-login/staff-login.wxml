@@ -40,7 +40,7 @@
       <input class="login-ipt" type="number" maxlength="6" value="{{ code }}" bindinput="onInput"
              placeholder="6 位动态码" placeholder-class="ph" confirm-type="done" bindconfirm="onSubmit" />
       <view class="btn login-btn {{ submitting?'disabled':'' }}" bindtap="onSubmit">确认</view>
-      <text class="login-tip">主口令由店主在云函数 claimAdmin 的环境变量 TOTP_SECRET 设置，加进验证器 App 出码。普通店员请联系店长把你加入后，用「员工入口」自助启用个人密钥。</text>
+      <text class="login-tip">主口令由店主在云函数 claimAdmin 的环境变量 TOTP_SECRET 设置，加进验证器 App 出码。普通店员请联系店长把你加入并在后台「生成码」，扫码后回此处输码登录。</text>
     </block>
 
     <!-- 启用二维码区（生成后出现）：扫进验证器 -->
