@@ -55,9 +55,9 @@
       <view class="feed-bar"></view>
       <text>好物推荐</text>
     </view>
-    <view wx:if="{{ goods.length }}" class="feed">
-      <view wx:for="{{ goods }}" wx:key="_id" class="g-card" data-id="{{ item._id }}" bindtap="onGoods">
-        <image class="g-img" src="{{ item.image || '/assets/placeholder/goods.png' }}" mode="aspectFill" />
+    <view wx:if="{{ goods.length }}" class="feed fade-in">
+      <view wx:for="{{ goods }}" wx:key="_id" class="g-card tappable" data-id="{{ item._id }}" bindtap="onGoods">
+        <image class="g-img" src="{{ item.image || '/assets/placeholder/goods.png' }}" mode="aspectFill" lazy-load />
         <view class="g-body">
           <text class="g-name">{{ item.name }}</text>
           <view class="g-bottom">
@@ -67,7 +67,17 @@
         </view>
       </view>
     </view>
-    <view wx:elif="{{ !loading }}" class="empty">暂无商品，去 goods 集合添加（status:"on"）</view>
+    <!-- 骨架屏：加载中 -->
+    <view wx:elif="{{ loading }}" class="sk-grid">
+      <view wx:for="{{ [1,2,3,4] }}" wx:key="*this" class="sk-goods">
+        <view class="sk sk-pic"></view>
+        <view class="sk-meta">
+          <view class="sk sk-line mid"></view>
+          <view class="sk sk-line short"></view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty">暂无商品，去 goods 集合添加（status:"on"）</view>
   </view>
 
   <view wx:if="{{ goods.length }}" class="feed-end">没有更多了</view>

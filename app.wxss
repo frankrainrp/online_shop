@@ -83,3 +83,53 @@ view, text { box-sizing: border-box; }
 .empty { text-align: center; color: var(--text-mute); padding: 120rpx 0; font-size: 26rpx; }
 
 .section-title { font-size: 30rpx; font-weight: 600; margin: 32rpx 0 20rpx; color: var(--text); }
+
+/* ===== 丝滑感知层（纯 CSS，不影响真实性能）===== */
+
+/* 内容淡入上移：给数据加载后出现的容器加 class="fade-in" */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 0.35s ease both; }
+
+/* 点击反馈：仅真正可点的元素按下时轻微缩小+变暗（不波及静态信息卡） */
+.btn, .tappable, .g-card, .goods-card, .update-card, .nav-item, .action-card {
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+.btn:active, .tappable:active, .g-card:active, .goods-card:active,
+.update-card:active, .nav-item:active, .action-card:active {
+  transform: scale(0.97); opacity: 0.9;
+}
+
+/* 骨架屏：灰块 + 流光 shimmer */
+@keyframes shimmer {
+  0%   { background-position: -120% 0; }
+  100% { background-position: 220% 0; }
+}
+.sk {
+  background: var(--bg-card);
+  background-image: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite linear;
+  border-radius: 12rpx;
+}
+.sk-line { height: 28rpx; border-radius: 8rpx; }
+.sk-line.short { width: 40%; }
+.sk-line.mid { width: 65%; }
+.sk-thumb { width: 160rpx; height: 160rpx; border-radius: 16rpx; flex-shrink: 0; }
+.sk-card { border-radius: 20rpx; }
+
+/* 骨架：通用横向列表行（缩略图 + 两行字） */
+.sk-row {
+  display: flex; gap: 20rpx;
+  background: var(--bg-card); border: 1rpx solid var(--line);
+  border-radius: 20rpx; padding: 20rpx; margin-bottom: 20rpx;
+}
+.sk-row .sk-col { flex: 1; display: flex; flex-direction: column; gap: 18rpx; padding-top: 8rpx; }
+
+/* 骨架：双列商品卡（首页/兑换瀑布流） */
+.sk-grid { display: flex; flex-wrap: wrap; gap: 20rpx; }
+.sk-goods { width: calc(50% - 10rpx); box-sizing: border-box; background: var(--bg-card); border: 1rpx solid var(--line); border-radius: 20rpx; overflow: hidden; }
+.sk-goods .sk-pic { width: 100%; height: 220rpx; }
+.sk-goods .sk-meta { padding: 20rpx; display: flex; flex-direction: column; gap: 16rpx; }

@@ -4,10 +4,10 @@
           class="tab {{ filter===item?'on':'' }}" data-f="{{ item }}" bindtap="setFilter">{{ item }}</view>
   </view>
 
-  <view wx:if="{{ list.length }}">
+  <view wx:if="{{ list.length }}" class="fade-in">
     <view wx:for="{{ list }}" wx:key="_id"
           wx:if="{{ filter==='全部' || item.status===filter }}" class="redeem-row">
-      <image class="r-img" src="{{ item.goodsImage }}" mode="aspectFill" />
+      <image class="r-img" src="{{ item.goodsImage }}" mode="aspectFill" lazy-load />
       <view class="col" style="flex:1; margin-left:20rpx">
         <text class="title" style="font-size:28rpx">{{ item.goodsName }}</text>
         <text class="mute" style="margin-top:6rpx">单号 {{ item.code }}</text>
@@ -19,5 +19,14 @@
       </view>
     </view>
   </view>
-  <view wx:elif="{{ !loading }}" class="empty">还没有兑换记录，去积分兑换看看吧 ~</view>
+  <view wx:elif="{{ loading }}">
+    <view wx:for="{{ [1,2,3] }}" wx:key="*this" class="sk-row">
+      <view class="sk sk-thumb"></view>
+      <view class="sk-col">
+        <view class="sk sk-line mid"></view>
+        <view class="sk sk-line short"></view>
+      </view>
+    </view>
+  </view>
+  <view wx:else class="empty">还没有兑换记录，去积分兑换看看吧 ~</view>
 </view>

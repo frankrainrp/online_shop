@@ -20,10 +20,10 @@
 
   <!-- 商品网格 -->
   <view class="wrap">
-    <view wx:if="{{ goods.length }}" class="goods-grid">
+    <view wx:if="{{ goods.length }}" class="goods-grid fade-in">
       <view wx:for="{{ goods }}" wx:key="_id"
             wx:if="{{ cat==='全部' || item.category===cat }}" class="goods-card">
-        <image class="goods-img" src="{{ item.image }}" mode="aspectFill" data-id="{{ item._id }}" bindtap="goDetail" />
+        <image class="goods-img" src="{{ item.image }}" mode="aspectFill" data-id="{{ item._id }}" bindtap="goDetail" lazy-load />
         <text class="goods-name ellipsis" data-id="{{ item._id }}" bindtap="goDetail">{{ item.name }}</text>
         <view class="row between" style="margin-top:8rpx">
           <text class="tag-gold tag">{{ item.cost }} 积分</text>
@@ -35,6 +35,15 @@
         </view>
       </view>
     </view>
-    <view wx:elif="{{ !loading }}" class="empty">暂无可兑换商品，去 goods 集合添加（status:"on"）</view>
+    <view wx:elif="{{ loading }}" class="sk-grid">
+      <view wx:for="{{ [1,2,3,4] }}" wx:key="*this" class="sk-goods">
+        <view class="sk sk-pic"></view>
+        <view class="sk-meta">
+          <view class="sk sk-line mid"></view>
+          <view class="sk sk-line short"></view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty">暂无可兑换商品，去 goods 集合添加（status:"on"）</view>
   </view>
 </view>
